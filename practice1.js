@@ -53,10 +53,9 @@ function printNumber(start, end) {
 // Write two versions of the above function. One using a while loop and the
 // other using a for loop.
 function printNumberWhile(start, end) {
-    var count = start;
-    while (count <= end) {
-        console.log(count);
-        count ++;
+    while (start <= end) {
+        console.log(start);
+        start++;
     }
 }
 
@@ -93,7 +92,7 @@ function printBanner(textToPrint) {
 function factors(numToFactor) {
     var factorArray = [];
     for (var divisor = 1; divisor <= numToFactor; divisor++) {
-        if (numToFactor % divisor ===0) {
+        if (numToFactor % divisor === 0) {
             factorArray.push(divisor);
         }
     }
@@ -335,7 +334,59 @@ function ticTacToe(ticArray) {
     return "tie game";
 }
 
-// Debug
+// Given the following dictionary, representing a mapping from names to phone
+// numbers:
+// var phonebookDict = {
+//   Alice: '703-493-1834',
+//   Bob: '857-384-1234',
+//   Elizabeth: '484-584-2923'
+// }
+// Write code to:
+
+// print Elizabeth's phone number
+function printPhoneNumber(name, dict) {
+    console.log(dict[name] || "name not found");
+}
+
+// Add a entry to the dictionary: Kareem's number is 938-489-1234.
+function addNumber(name, phoneNum, dict) {
+    dict[name] = phoneNum;
+    return dict;
+}
+
+// Delete Alice's phone entry.
+function deleteNumber(name, dict) {
+    delete dict[name];
+    return dict;
+}
+
+// Change Bob's phone number to '968-345-2345'.
+function changeNumber(name, phoneNum, dict) {
+    dict = addNumber(name, phoneNum, dict);
+    return dict;
+}
+
+// Print all the phone entries.
+function printAll(dict) {
+    for (var key in dict) {
+        console.log(dict[key]);
+    }
+}
+
+////////////////
+///// Debug/////
+////////////////
+// var phonebookDict = {
+//   Alice: '703-493-1834',
+//   Bob: '857-384-1234',
+//   Elizabeth: '484-584-2923'
+// }
+
+// printPhoneNumber("Alice", phonebookDict);
+// console.log(addNumber("Mark", "123-456-7890", phonebookDict));
+// console.log(deleteNumber("Mark", phonebookDict));
+// console.log(changeNumber("Bob", "968-345-2345", phonebookDict));
+// printAll(phonebookDict);
 // console.log(hello());
 // console.log(madlib("Mark", "science"));
 // console.log(splitAmount(150, "fair", 5));
