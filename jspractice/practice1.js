@@ -269,4 +269,5 @@ function matMult(matrix1, matrix2) {
 // console.log(matrixAdd([[1,2],[3,4]],[[5,6],[7,8]]));
 // console.log(multiplyMatrices([[1,2],[3,4]],[[5,6],[7,8]]));
 // console.log(matMult([[1,2],[3,4]],[[5,6],[7,8]]));
+// Need to test other functions
 
