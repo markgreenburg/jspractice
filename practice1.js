@@ -373,15 +373,52 @@ function printAll(dict) {
     }
 }
 
+// Write a function histogram which takes a string as argument. It will tally
+// (histogram) the number of times each character appears in the string, and
+// return the tally as an object.
+function histogram(string) {
+    var charCounts = {};
+    for (var index = 0; index < string.length; index++) {
+        if (string[index] in charCounts) {
+            charCounts[string[index]]++;
+        }
+        else {
+            charCounts[string[index]] = 1;
+        }
+    }
+    return charCounts;
+}
+
+// Print the top 2 most frequently used letters in the string.
+function sortHistogram(histogramObj) {
+    var histogramArray = [];
+    for (var key in histogramObj) {
+        var histogramKeyPair = {
+            'key': key,
+            'count': histogramObj[key]
+        }
+        histogramArray.push(histogramKeyPair);
+    }
+    histogramArray.sort(function (a, b) {
+        return b.count - a.count;
+    })
+    return histogramArray;
+}
+
 ////////////////
 ///// Debug/////
 ////////////////
+
 // var phonebookDict = {
 //   Alice: '703-493-1834',
 //   Bob: '857-384-1234',
 //   Elizabeth: '484-584-2923'
 // }
 
+// console.log(histogram("Here's a random string to count"));
+var sortedArray = sortHistogram(histogram("Here's a random string to count"));
+console.log(sortedArray[0]);
+console.log(sortedArray[1]);
 // printPhoneNumber("Alice", phonebookDict);
 // console.log(addNumber("Mark", "123-456-7890", phonebookDict));
 // console.log(deleteNumber("Mark", phonebookDict));
