@@ -63,19 +63,19 @@ function printNumberWhile(start, end) {
 // Write a function printSquare which is given a size and prints a square of
 // that size using asterisks.
 function printSquare(numToSquare) {
-    for (var i = 0; i <= numToSquare; i++) {
-        console.log("*" * numToSquare);
+    for (var i = 0; i < numToSquare; i++) {
+        console.log("*".repeat(numToSquare));
     }
 }
 
 // Write function printBox which is given a width and height and prints a
 // hollow box of those given dimensions.
 function printBox(width, height) {
-    console.log("*" * width);
-    for (var i = 0; i <= (height - 2); i++) {
-        console.log("*" + " " * (width - 2) + "*");
+    console.log("*".repeat(width));
+    for (var i = 0; i < (height - 2); i++) {
+        console.log("*" + " ".repeat(width - 2) + "*");
     }
-    console.log("*" * width);
+    console.log("*".repeat(width));
 }
 
 // Write a function printBanner which is given some text and prints a banner
@@ -83,9 +83,9 @@ function printBox(width, height) {
 // of the text.
 function printBanner(textToPrint) {
     textToPrint = "*" + textToPrint + "*";
-    console.log("*" * textToPrint.length);
+    console.log("*".repeat(textToPrint.length));
     console.log(textToPrint);
-    console.log("*" * textToPrint.length);
+    console.log("*".repeat(textToPrint.length));
 }
 
 // Write a function factors which is given a number and returns an array
@@ -104,22 +104,22 @@ function factors(numToFactor) {
 // Caesar cipher of the string.
 function cipher(plainString, offset) {
     // set up alphabet array
-    plainString = plainString.lower;
-    var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    plainString = plainString.toLowerCase()
+    var alphabet = "abcdefghijklmnopqrstuvwxyz";
     var cipherString = "";
     var currentIndex;
     var newIndex;
-    for (var i = 0; i <= plainString.length; i++) {
+    for (var i = 0; i < plainString.length; i++) {
         if (alphabet.indexOf(plainString[i]) >= 0) {
             currentIndex = alphabet.indexOf(plainString[i]);
             newIndex = currentIndex + offset;
-            if (newIndex > alphabet.length) {
+            if (newIndex >= alphabet.length) {
                 newIndex -= 26;
             }
-            cipherString.push(alphabet[newIndex]);
+            cipherString += alphabet[newIndex];
         }
         else {
-            cipherString.push(plainString[i]);
+            cipherString += plainString[i];
         }
     }
     return cipherString;
@@ -132,53 +132,56 @@ function decipher(cipherString, offset) {
     var plainString = "";
     var currentIndex;
     var newIndex;
-    for (var i = 0; i <= cipherString.length; i++) {
+    for (var i = 0; i < cipherString.length; i++) {
         if (alphabet.indexOf(cipherString[i]) >= 0) {
             currentIndex = alphabet.indexOf(cipherString[i]);
             newIndex = currentIndex - offset;
             if (newIndex < 0) {
-                newIndex = 26 - newIndex;
+                newIndex = 26 + newIndex;
             }
-            plainString.push(alphabet[newIndex]);
+            plainString += alphabet[newIndex];
         }
         else {
-            plainString.push(cipherString[i]);
+            plainString += cipherString[i];
         }
     }
     return plainString;
 }
-
-// Write a function leetspeak which is given a string, and returns the 
+// Write a function leetspeak which is given a string, and returns the
 // leetspeak equivalent of the string. To convert text to its leetspeak version,
 // make the following substitutions:
 function leetSpeak(string) {
-    string = string.upper
-    for (var i = 0; i <= string.length; i++) {
+    string = string.toUpperCase();
+    var leetString = ""
+    for (var i = 0; i < string.length; i++) {
         switch (string[i]) {
             case "A":
-                string[i] = "4"
+                leetString += string[i]
                 break;
             case "E":
-                string[i] = "3"
+                leetString += string[i]
                 break;
             case "G":
-                string[i] = "6"
+                leetString += string[i]
                 break;
             case "I":
-                string[i] = "1"
+                leetString += string[i]
                 break;
             case "O":
-                string[i] = "0"
+                leetString += string[i]
                 break;
             case "S":
-                string[i] = "5"
+                leetString += string[i]
                 break;
             case "T":
-                string[i] = "7"
+                leetString += string[i]
+                break;
+            default:
+                leetString += string[i];
                 break;
         }
     }
-    return string;
+    return leetString;
 }
 
 // Write a function, which is given a string, return the result of extending
@@ -261,13 +264,97 @@ function matMult(matrix1, matrix2) {
     return multipliedMatrix;
 }
 
-// Debug
+// Write a function rockPaperScissors which takes the throw of player 1 and the
+// 'scissors'. It will return 'player 1' if player 1 wins, 'player 2' if player
+// 2 wins, and 'draw' if there is no winner.
+function rockPaperScissors(player1, player2) {
+    var winner;
+    if (player1 === player2) {
+        winner = "tie";
+        return winner;
+    }
+    switch (player1) {
+        case "rock":
+            switch (player2) {
+                case "paper":
+                    winner = "player 2";
+                    break;
+                case "scissors":
+                    winner = "player 1";
+                    break;
+            }
+            break;
+        case "paper":
+            switch (player2) {
+                case "rock":
+                    winner = "player 1";
+                    break;
+                case "scissors":
+                    winner = "player 2";
+                    break;
+            }
+            break;
+        case "scissors":
+            switch (player2) {
+                case "rock":
+                    winner = "player 2";
+                    break;
+                case "paper":
+                    winner = "player 1";
+                    break;
+            }
+            break;
+    }
+    return winner;
+}
 
+// Write a function ticTacToe which takes a two-dimensional array of size 3x3.
+// Each cell in the two dimensional array can be one of 'O', 'X', or null. The
+// ticTacToe function will determine the winner by returning 'O' if O makes a
+// row; returning 'X' if X makes a row; return null if neither makes a row
+function ticTacToe(ticArray) {
+    // case one of the rows is all the same
+    for (var row = 0; row < ticArray.length; row++) {
+        if (ticArray[row][0] === ticArray[row][1] && ticArray[row][0] === 
+        ticArray[row][2]) {
+            return ticArray[row][0];
+        }
+    }
+    // case one of the columns is all the same
+    for (var index = 0; index < ticArray[0].length; index++) {
+        if (ticArray[0][index] === ticArray[1][index] && ticArray[0][index] ===
+        ticArray[2][index]) {
+            return ticArray[0][index];
+        }
+    }
+    // case a diagonal is all the same
+    if ((ticArray[0][0] === ticArray[1][1] && ticArray[0][0] === ticArray[2][2]) || (ticArray[0][2] === ticArray[1][1] && ticArray[0][2] === ticArray[2][0])) {
+        return ticArray[1][1];
+    }
+    // if no winner found, return null result
+    return "tie game";
+}
+
+// Debug
+// console.log(hello());
+// console.log(madlib("Mark", "science"));
+// console.log(splitAmount(150, "fair", 5));
+// console.log(printNumber(2, 6));
+// console.log(printNumberWhile(2, 6));
+// console.log(printSquare(2));
+// console.log(printBox(5, 4));
+// console.log(printBanner("Hey There"));
+// console.log(factors(120));
+// console.log(cipher("Hey there what's going on", 13));
+// console.log(decipher("url gurer jung'f tbvat ba",13));
+// console.log(leetSpeak("Hey there what's going on"));
 // console.log(longLongVowels("some string"));
 // console.log(sumNumbers([1,2,3,4,5]));
 // console.log(getPositive([-1, 0, 1, 2, 3, 4, -5, 6, -7]));
 // console.log(matrixAdd([[1,2],[3,4]],[[5,6],[7,8]]));
 // console.log(multiplyMatrices([[1,2],[3,4]],[[5,6],[7,8]]));
 // console.log(matMult([[1,2],[3,4]],[[5,6],[7,8]]));
-// Need to test other functions
-
+// console.log(rockPaperScissors("rock", "scissors"));
+// console.log(ticTacToe([["X","O","X"],
+//                        ["O","X","O"],
+//                        ["O","X","O"]]));
