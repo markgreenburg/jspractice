@@ -25,7 +25,6 @@ function tipAmount(bill, serviceLevel) {
     return bill * tipPercent;
 }
 
-
 // Write a function totalAmount that takes the same arguments as tipAmount
 // except it returns the total as the tip amount plus the bill amount. This
 // function may make use of tipAmount as a sub-task.
@@ -341,8 +340,7 @@ function ticTacToe(ticArray) {
 //   Bob: '857-384-1234',
 //   Elizabeth: '484-584-2923'
 // }
-// Write code to:
-
+// Write code to...
 // print Elizabeth's phone number
 function printPhoneNumber(name, dict) {
     console.log(dict[name] || "name not found");
@@ -405,20 +403,266 @@ function sortHistogram(histogramObj) {
     return histogramArray;
 }
 
+// Write a function which takes an array of numbers as input and returns a new
+// array containing only the positive numbers in the given array.
+function isPositive(item) {
+    return item > 0;
+}
+
+function positivesOnly(someArray) {
+    return someArray.filter(isPositive);
+}
+
+// Write a function which takes an array of numbers as input and returns a new
+// array containing only the even numbers in the given array.
+function isEven(item) {
+    return item % 2 == 0;
+}
+
+function evensOnly(someArray) {
+    someArray.filter(isEven);
+}
+
+// Write a function which takes an array of numbers as input and returns a new
+// array containing result of squaring each of the numbers in the given array
+// by two. Example: squareTheNumbers([1, 2, 3]) should give [1, 4, 9]
+function squareEach(item) {
+    return Math.pow(item, 2);
+}
+
+function squareNums(someArray) {
+    return someArray.map(squareEach);
+}
+
+// Write a function which takes an array of city objects like such:
+// var cities = [
+//   { name: 'Los Angeles', temperature: 60.0},
+//   { name: 'Atlanta', temperature: 52.0 },
+//   { name: 'Detroit', temperature: 48.0 },
+//   { name: 'New York', temperature: 80.0 }
+// ];
+// as input and returns a new array containing the cities whose temperature is
+// cooler than 70 degrees.
+function lowTemps(city) {
+    return city.temperature < 70;
+}
+
+function coldCities(someArray) {
+    return someArray.filter(lowTemps);
+}
+
+// Write a function which takes an array of city objects like the above problem
+// as input and returns an array of the cities names.
+function getName(city) {
+    return city.name;
+}
+
+function listCities(someArray) {
+    return someArray.map(getName);
+}
+
+// Given an array of people's names print out 'Good Job, {{name}}!' for each
+// person's name, one on a line.
+function congratulate(person) {
+    console.log("Good job, " + person + "!");
+}
+
+function congratEveryone(someArray) {
+    return someArray.forEach(congratulate);
+}
+
+// Given an array of strings such the array of names given in the previous
+// problem, sort them by alphabetically order.
+function sortNames(someArray) {
+    return someArray.sort();
+}
+
+// Sort the same array, but not by alphabetically order, but by how long each
+// name is, shortest name first.
+function compareLength(a, b) {
+    return a.length - b.length;
+}
+
+function sortNamesByLength(someArray) {
+    return someArray.sort(compareLength);
+}
+
+// Given an array of array of numbers like:
+// var arr = [
+//   [1, 3, 4],
+//   [2, 4, 6, 8],
+//   [3, 6]
+// ];
+// Sort the array by the sum of each inner array. For the above example, the
+// respective sums for each inner array is 8, 20, and 9.
+function getSum(a, b) {
+    return a + b;
+}
+
+function sortBySum(a, b) {
+    return a.reduce(getSum) - b.reduce(getSum);
+}
+
+function sortSums(someArray) {
+    return someArray.sort(sortBySum);
+}
+
+// Given this function:
+function call3Times(fun) {
+  fun();
+  fun();
+  fun();
+}
+// Use the call3Times function to print "Hello, world!" 3 times.
+// Either of the below will work:
+function fun(person) {
+    console.log("Hello, " + person + "!");
+}
+
+function printNames(someArray) {
+    someArray.forEach(fun)
+}
+
+// var fun = function() {
+//     console.log("Hello, world!");
+// }
+
+// Write a function sum that takes an array of numbers as argument and returns
+// the sum of those numbers. Use the reduce method to do this.
+function sumArray(someArray) {
+    return someArray.reduce(getSum);
+}
+
+// Write a function acronym that takes an array of words as argument and
+// returns the acronym of the words. Use the reduce method to do this.
+
+//Mine
+function getFirstLetter(word) {
+    return word[0];
+}
+
+function getAcronym(word1, word2) {
+    return word1 + word2;
+}
+
+function acronym(someArray) {
+    var firstLetters = someArray.map(getFirstLetter);
+    return firstLetters.reduce(getAcronym);
+}
+
+//Karissa
+function addLetters(currentValue, word) {
+    return currentValue + word[0].toUpperCase();
+}
+function karissaAcronym(someArray) {
+    someArray.reduce(addLetters, '');
+}
+
+// Damian
+function combine(a, b) {
+    if(a == "") {
+        return b[0];
+    }
+    return a + b[0];
+}
+function damianAcronym(someArray) {
+    return someArray.reduce(combine,"");
+}
+
+// Implement a forEach function which takes two arguments: an array arr and a
+// function fun. It will call fun passing each item in arr to fun as the first
+// argument.
+// function fun(person) {
+//     console.log("Hello, " + person.name + "!");
+// }
+function forEach(someArray, doStuff) {
+    someArray.forEach(doStuff);
+}
+
+// Implement a map function which takes two arguments: an array arr and a
+// function fun. It will return a new array, with each of its results being the
+// result of calling fun with argument
+function fun(person) {
+    return "Hello, " + person + "!";
+}
+
+function map(someArray, doStuff) {
+    // This will work:
+    // return someArray.map(doStuff);
+    // So will this:
+    var greetList = [];
+    for (var personIndex in someArray) {
+        greetList.push(fun(someArray[personIndex].name));
+    }
+    return greetList;
+}
+
 ////////////////
 ///// Debug/////
 ////////////////
 
-// var phonebookDict = {
-//   Alice: '703-493-1834',
-//   Bob: '857-384-1234',
-//   Elizabeth: '484-584-2923'
-// }
+var arr = [
+  [1, 3, 4],
+  [2, 4, 6, 8],
+  [3, 6]
+];
 
-// console.log(histogram("Here's a random string to count"));
-var sortedArray = sortHistogram(histogram("Here's a random string to count"));
-console.log(sortedArray[0]);
-console.log(sortedArray[1]);
+var peopleAttributes = [
+  { name: 'Bob' },
+  { name:'Alice' },
+  { name:'Joe' }
+];
+
+var people = [
+  'Dom',
+  'Lyn',
+  'Kirk',
+  'Autumn',
+  'Trista',
+  'Jesslyn',
+  'Kevin',
+  'John',
+  'Eli',
+  'Juan',
+  'Robert',
+  'Keyur',
+  'Jason',
+  'Che',
+  'Ben'
+];
+
+var phonebookDict = {
+  Alice: '703-493-1834',
+  Bob: '857-384-1234',
+  Elizabeth: '484-584-2923'
+}
+
+var cities = [
+  { name: 'Los Angeles', temperature: 60.0},
+  { name: 'Atlanta', temperature: 52.0 },
+  { name: 'Detroit', temperature: 48.0 },
+  { name: 'New York', temperature: 80.0 }
+];
+
+// console.log(map(peopleAttributes, fun));
+// forEach(peopleAttributes, fun);
+// console.log(acronym(people));
+// console.log(acronym(people));
+// console.log(sumArray([5, 3, 4, 9, 12, -1, 0]));
+// call3Times(fun);
+// console.log(sortSums(arr));
+// console.log(sortNamesByLength(people));
+// console.log(sortNames(people));
+// congratEveryone(people);
+// console.log(listCities(cities));
+// console.log(coldCities(cities));
+// console.log(squareNums([-1, 4, 0, 5, -2, 12, -9]));
+// console.log(positivesOnly([-1, 4, 0, 5, -2, 12, -9]));
+// console.log(evensOnly([-1, 4, 0, 5, -2, 12, -9]));
+// console.log(histogram("A random string to count"));
+// var sortedArray = sortHistogram(histogram("A random string to count"));
+// console.log(sortedArray[0]);
+// console.log(sortedArray[1]);
 // printPhoneNumber("Alice", phonebookDict);
 // console.log(addNumber("Mark", "123-456-7890", phonebookDict));
 // console.log(deleteNumber("Mark", phonebookDict));
