@@ -1,3 +1,4 @@
+'use strict';
 // You will implement the rest of these exercises using Test-Driven Development.
 // Create a constructor Card. A card object will have 2 properties:
 // point - the point value of the card: a number between 1 and 13.
@@ -8,7 +9,7 @@ Card = function(point, suit) {
 }
 
 Card.prototype.getImageUrl = function() {
-    return '/images/' + this.point + '_of_' + this.suit + '.png';
+    return 'images/' + this.point + '_of_' + this.suit + '.png';
 }
 
 Hand = function() {
@@ -50,24 +51,65 @@ Deck.prototype.draw = function() {
 ///////////
 // Debug //
 ///////////
-const newDeck = new Deck();
-console.log("New Deck of cards: ");
-console.log(newDeck.cardArray);
-console.log("Shuffling...");
-newDeck.shuffle();
-console.log("Shuffled deck: ");
-console.log(newDeck.cardArray);
-console.log("Getting a new card...5 of diamonds");
-const newCard = new Card(5, "diamonds");
-console.log(newCard);
-console.log("Printing image path...");
-console.log(newCard.getImageUrl());
-console.log("Getting a new hand...");
-const newHand = new Hand();
-console.log(newHand);
-console.log("Adding the card to our hand...")
-console.log(newHand.addCard(newCard));
-console.log("Hand is now: ")
-console.log(newHand);
+// const newDeck = new Deck();
+// console.log("New Deck of cards: ");
+// console.log(newDeck.cardArray);
+// console.log("Shuffling...");
+// newDeck.shuffle();
+// console.log("Shuffled deck: ");
+// console.log(newDeck.cardArray);
+// console.log("Getting a new card...5 of diamonds");
+// const newCard = new Card(5, "diamonds");
+// console.log(newCard);
+// console.log("Printing image path...");
+// console.log(newCard.getImageUrl());
+// console.log("Getting a new hand...");
+// const newHand = new Hand();
+// console.log(newHand);
+// console.log("Adding the card to our hand...")
+// console.log(newHand.addCard(newCard));
+// console.log("Hand is now: ")
+// console.log(newHand);
 
+Game = function() {}
 
+Game.prototype.initializeGame = function() {
+  this.gameDeck = new Deck();
+  this.gameDeck.shuffle();
+  this.dealerHand = new Hand();
+  this.playerHand = new Hand();
+  deal(this.gameDeck, this.dealerHand, this.playerHand);
+}
+
+Game.prototype.deal = function() {
+  for (let cardsToDeal = 0; cardsToDeal < 2; cardsToDeal++) {
+    hitMe(this.gameDeck, this.playerHand);
+    hitMe(this.gameDeck, this.dealerHand);
+    console.log(this.playerHand);
+    console.log(this.dealerHand);
+  }
+}
+
+hitMe = function(deck, player) {
+  player.addCard(deck.cardArray.pop());
+}
+
+document.getElementById('deal-button').addEventListener('click', initializeGame,
+    false);
+
+document.getElementById('hit-button').addEventListener('click', hitMe, 
+    false);
+
+// Game.prototype.deal = function(deck, dealer, player) {
+//   for (let cardsToDeal = 0; cardsToDeal < 2; cardsToDeal++) {
+//     hitMe(deck, player);
+//     hitMe(deck, dealer);
+//     console.log(dealer);
+//     console.log(player);
+//   }
+// }
+
+// hitMe = function(deck, player) {
+//   player.addCard(deck.cardArray.pop());
+// }
+  

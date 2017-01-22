@@ -1,0 +1,25 @@
+div#table {
+  /*background-color: rgb(135, 195, 25);*/
+  border: 3px solid brown;
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(180, 230, 90)), to(rgb(135, 195, 25)));
+  background-image: -webkit-linear-gradient(top, rgb(180, 230, 90), rgb(135, 195, 25));
+  background-image: -moz-linear-gradient(top, rgb(180, 230, 90), rgb(135, 195, 25));
+  background-image: linear-gradient(to bottom, rgb(180, 230, 90), rgb(135, 195, 25));
+}
+
+div#dealer-hand {
+  height: 200px;
+  width: 90%;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: rgb(180, 230, 90);
+}
+
+div#player-hand {
+  height: 200px;
+  width: 90%;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: rgb(180, 230, 90);
+}
