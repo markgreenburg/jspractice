@@ -6,28 +6,34 @@
 
 // Classical constructors
 function Card(point, suit) {
-  this.point = point;
+  this.displayPoint = point;
   this.suit = suit;
+  if (this.displayPoint > 10) {
+    this.point = 10;
+  }
+  else {
+    this.point = this.displayPoint;
+  }
 }
 
 Card.prototype.getImageUrl = function() {
-    return "<img src='images/" + this.point + "_of_" + this.suit + ".png'" + 
+    return "<img src='images/" + this.displayPoint + "_of_" + this.suit + ".png'" + 
         " height='140px' width='100px'/>";
 }
 
 // staticmethod to accomplish the same...
 function getImageFromCard(cardobj) {
-  return "<img src='images/'" + cardobj.point + "_of_" + cardobj.suit + ".png'"
+  return "<img src='images/'" + cardobj.displayPoint + "_of_" + cardobj.suit + ".png'"
       + " height='140px' width='100px'/>";
 }
 
 // Draw whatever we need to the screen using JQuery append
 // '#dealer-hand', '#player-hand'
-function drawOnScreen(whatHtml, where) {
-  if (where === '#player-hand' || where === '#dealer-hand') {
+function drawOnScreen(whatHtml, where, how) {
+  if (how === 'append') {
     $(where).append(whatHtml);
   }
-  else if (where === '#player-points' || where === '#dealer-points') {
+  else if (how === 'replace') {
     $(where).empty().append(whatHtml);
   }
   // $(where).append(whatHtml);
@@ -65,20 +71,22 @@ Hand.prototype.addCard = function(cardObject, divName) {
       cardsDiv = '#dealer-hand';
   }
   this.cardArray.push(cardObject);
-  drawOnScreen(cardObject.getImageUrl(), cardsDiv);
+  drawOnScreen(cardObject.getImageUrl(), cardsDiv, 'append');
   this.points = calculatePoints(this.cardArray);
-  drawOnScreen(this.points.toString(), pointsDiv);
+  drawOnScreen(this.points.toString(), pointsDiv, 'replace');
   return this.cardArray;
 }
 
 function Deck() {
-  this.cardsLeft = 52;
   this.cardArray = [];
   const suits = ["diamonds", "spades", "hearts", "clubs"];
   const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-  for (let i = 0; i < suits.length; i++) {
-    for (let j = 0; j < points.length; j++) {
-      this.cardArray.push(new Card(points[j], suits[i]));
+  const decks = 3;
+  for (let deck = 0; deck < decks; deck++) {
+    for (let i = 0; i < suits.length; i++) {
+      for (let j = 0; j < points.length; j++) {
+        this.cardArray.push(new Card(points[j], suits[i]));
+      }
     }
   }
 }
@@ -106,11 +114,16 @@ Game.prototype.initializeGame = function() {
   console.log('new deck created');
   this.gameDeck.shuffle();
   console.log('new deck shuffled');
-  this.dealerHand = new Hand();
-  this.playerHand = new Hand();
 }
 
 Game.prototype.deal = function() {
+  this.dealerHand = new Hand();
+  this.playerHand = new Hand();
+  drawOnScreen('', '#messages', 'replace');
+  drawOnScreen('', '#dealer-hand', 'replace');
+  drawOnScreen('', '#player-hand', 'replace');
+  drawOnScreen(this.dealerHand.points.toString(), '#dealer-points', 'replace');
+  drawOnScreen(this.playerHand.points.toString(), '#player-points', 'replace');
   for (let cardsToDeal = 0; cardsToDeal < 2; cardsToDeal++) {
     hitMe(this.gameDeck, this.playerHand, 'player');
     hitMe(this.gameDeck, this.dealerHand, 'dealer');
@@ -127,14 +140,71 @@ newGame.initializeGame();
 
 document.getElementById('deal-button').addEventListener('click', function() {
     newGame.deal();
-    console.log(newGame.playerHand);
-    console.log(newGame.dealerHand);
-    }, false);
+}, false);
 
 document.getElementById('hit-button').addEventListener('click', function() {
     hitMe(newGame.gameDeck, newGame.playerHand, 'player');
-    console.log(newGame.playerHand);
-    }, false);
+    if (busted(newGame.playerHand)) {
+      drawOnScreen('You busted, house wins!', '#messages', 'replace');
+    }
+    if (blackjack(newGame.playerHand)) {
+      drawOnScreen('Blackjack! You win!', '#messages', 'replace');
+    }
+}, false);
+
+document.getElementById('stand-button').addEventListener('click', function() {
+while (!dealerMaxReached(newGame.dealerHand)) {
+      hitMe(newGame.gameDeck, newGame.dealerHand, 'dealer');
+    }
+    if (dealerMaxReached(newGame.dealerHand)) {
+      if (busted(newGame.dealerHand)) {
+        drawOnScreen('Dealer busted, you win!', '#messages', 'replace');
+      }
+      else if (!playerWon(newGame.playerHand, newGame.dealerHand)) {
+        drawOnScreen('House wins!', '#messages', 'replace');
+      }
+      else if (playerWon(newGame.playerHand, newGame.dealerHand)) {
+        drawOnScreen('You win!', '#messages', 'replace');
+      }
+    }
+}, false);
+
+// conditions
+// bust condition
+function busted(cardHand) {
+  if (cardHand.points > 21) {
+    return true;
+  }
+  return false;
+}
+
+// blackjack
+function blackjack(cardHand) {
+  if (cardHand.points === 21) {
+    return true;
+  }
+  return false;
+}
+
+//Dealer stays condition
+function dealerMaxReached(cardHand) {
+  if (cardHand.points >= 17) {
+    return true;
+  }
+  return false;
+}
+
+//Forced win
+function playerWon(playerHand, dealerHand) {
+if (dealerHand.points >= 17
+    && playerHand.points > dealerHand.points) {
+    return true;
+  }
+  return false;
+}
+
+
+
 
 ///////////
 // Debug //
