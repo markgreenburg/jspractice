@@ -23,8 +23,14 @@ function getImageFromCard(cardobj) {
 
 // Draw whatever we need to the screen using JQuery append
 // '#dealer-hand', '#player-hand'
-function appendToScreen(whatHtml, where) {
-  $(where).append(whatHtml);
+function drawOnScreen(whatHtml, where) {
+  if (where === '#player-hand' || where === '#dealer-hand') {
+    $(where).append(whatHtml);
+  }
+  else if (where === '#player-points' || where === '#dealer-points') {
+    $(where).empty().append(whatHtml);
+  }
+  // $(where).append(whatHtml);
 }
 
 // function cardsToScreen(card, divName) {
@@ -59,9 +65,9 @@ Hand.prototype.addCard = function(cardObject, divName) {
       cardsDiv = '#dealer-hand';
   }
   this.cardArray.push(cardObject);
-  appendToScreen(cardObject.getImageUrl(), cardsDiv);
+  drawOnScreen(cardObject.getImageUrl(), cardsDiv);
   this.points = calculatePoints(this.cardArray);
-  appendToScreen(this.points.toString(), pointsDiv);
+  drawOnScreen(this.points.toString(), pointsDiv);
   return this.cardArray;
 }
 
