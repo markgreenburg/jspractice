@@ -3,6 +3,8 @@
 // Create a constructor Card. A card object will have 2 properties:
 // point - the point value of the card: a number between 1 and 13.
 // suit - the suit of the card: one of diamonds, clubs, hearts and spades.
+
+Pseudo-classical constructors
 Card = function(point, suit) {
   this.point = point;
   this.suit = suit;
