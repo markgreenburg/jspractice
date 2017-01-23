@@ -20,6 +20,13 @@
       "port": 5858,
       "outFiles": [],
       "sourceMaps": true
+    },
+    {
+      "name": "Launch homepage.html (disable sourcemaps)",
+      "type": "chrome",
+      "request": "launch",
+      "sourceMaps": false,
+      "file": "${workspaceRoot}/homepage.html"
     }
   ]
 }

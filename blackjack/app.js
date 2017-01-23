@@ -4,30 +4,72 @@
 // point - the point value of the card: a number between 1 and 13.
 // suit - the suit of the card: one of diamonds, clubs, hearts and spades.
 
-Pseudo-classical constructors
-Card = function(point, suit) {
+// Classical constructors
+function Card(point, suit) {
   this.point = point;
   this.suit = suit;
 }
 
 Card.prototype.getImageUrl = function() {
-    return 'images/' + this.point + '_of_' + this.suit + '.png';
+    return "<img src='images/" + this.point + "_of_" + this.suit + ".png'" + 
+        " height='140px' width='100px'/>";
 }
 
-Hand = function() {
+// staticmethod to accomplish the same...
+function getImageFromCard(cardobj) {
+  return "<img src='images/'" + cardobj.point + "_of_" + cardobj.suit + ".png'"
+      + " height='140px' width='100px'/>";
+}
+
+// Draw whatever we need to the screen using JQuery append
+// '#dealer-hand', '#player-hand'
+function appendToScreen(whatHtml, where) {
+  $(where).append(whatHtml);
+}
+
+// function cardsToScreen(card, divName) {
+//   const img_src = "<img src='" + card.getImageUrl() + "' height='140px'"
+//       + " width='100px'/>";
+//   $(divName).append(img_src);
+// }
+
+function calculatePoints(cardArray) {
+  console.log(cardArray);
+  return cardArray.reduce(function(a, card) {
+      a += card.point;
+      return a;
+  }, 0);
+}
+
+// Class to represent a hand of cards
+function Hand() {
   this.cardArray = [];
+  this.points = 0;
 }
 
-Hand.prototype.addCard = function(cardObject) {
+Hand.prototype.addCard = function(cardObject, divName) {
+  let pointsDiv = '';
+  let cardsDiv = '';
+  if (divName === 'player') {
+    pointsDiv = '#player-points';
+    cardsDiv = '#player-hand';
+  }
+  else if (divName === 'dealer') {
+      pointsDiv = '#dealer-points';
+      cardsDiv = '#dealer-hand';
+  }
   this.cardArray.push(cardObject);
+  appendToScreen(cardObject.getImageUrl(), cardsDiv);
+  this.points = calculatePoints(this.cardArray);
+  appendToScreen(this.points.toString(), pointsDiv);
   return this.cardArray;
 }
 
-Deck = function() {
+function Deck() {
   this.cardsLeft = 52;
+  this.cardArray = [];
   const suits = ["diamonds", "spades", "hearts", "clubs"];
   const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-  this.cardArray = [];
   for (let i = 0; i < suits.length; i++) {
     for (let j = 0; j < points.length; j++) {
       this.cardArray.push(new Card(points[j], suits[i]));
@@ -49,6 +91,44 @@ Deck.prototype.draw = function() {
   this.totalCards -= 1;
   return this.cardArray.pop();
 }
+
+// Game class
+function Game() {}
+
+Game.prototype.initializeGame = function() {
+  this.gameDeck = new Deck();
+  console.log('new deck created');
+  this.gameDeck.shuffle();
+  console.log('new deck shuffled');
+  this.dealerHand = new Hand();
+  this.playerHand = new Hand();
+}
+
+Game.prototype.deal = function() {
+  for (let cardsToDeal = 0; cardsToDeal < 2; cardsToDeal++) {
+    hitMe(this.gameDeck, this.playerHand, 'player');
+    hitMe(this.gameDeck, this.dealerHand, 'dealer');
+  }
+}
+
+function hitMe(gamedeck, handofcards, divName) {
+  handofcards.addCard(gamedeck.cardArray.pop(), divName);
+}
+
+// Start our game and set up event listeners
+var newGame = new Game();
+newGame.initializeGame();
+
+document.getElementById('deal-button').addEventListener('click', function() {
+    newGame.deal();
+    console.log(newGame.playerHand);
+    console.log(newGame.dealerHand);
+    }, false);
+
+document.getElementById('hit-button').addEventListener('click', function() {
+    hitMe(newGame.gameDeck, newGame.playerHand, 'player');
+    console.log(newGame.playerHand);
+    }, false);
 
 ///////////
 // Debug //
@@ -72,46 +152,3 @@ Deck.prototype.draw = function() {
 // console.log(newHand.addCard(newCard));
 // console.log("Hand is now: ")
 // console.log(newHand);
-
-Game = function() {}
-
-Game.prototype.initializeGame = function() {
-  this.gameDeck = new Deck();
-  this.gameDeck.shuffle();
-  this.dealerHand = new Hand();
-  this.playerHand = new Hand();
-  deal(this.gameDeck, this.dealerHand, this.playerHand);
-}
-
-Game.prototype.deal = function() {
-  for (let cardsToDeal = 0; cardsToDeal < 2; cardsToDeal++) {
-    hitMe(this.gameDeck, this.playerHand);
-    hitMe(this.gameDeck, this.dealerHand);
-    console.log(this.playerHand);
-    console.log(this.dealerHand);
-  }
-}
-
-hitMe = function(deck, player) {
-  player.addCard(deck.cardArray.pop());
-}
-
-document.getElementById('deal-button').addEventListener('click', initializeGame,
-    false);
-
-document.getElementById('hit-button').addEventListener('click', hitMe, 
-    false);
-
-// Game.prototype.deal = function(deck, dealer, player) {
-//   for (let cardsToDeal = 0; cardsToDeal < 2; cardsToDeal++) {
-//     hitMe(deck, player);
-//     hitMe(deck, dealer);
-//     console.log(dealer);
-//     console.log(player);
-//   }
-// }
-
-// hitMe = function(deck, player) {
-//   player.addCard(deck.cardArray.pop());
-// }
-  
