@@ -17,14 +17,7 @@ function Card(point, suit) {
 }
 
 Card.prototype.getImageUrl = function() {
-    return "<img src='images/" + this.displayPoint + "_of_" + this.suit + ".png'" + 
-        " height='140px' width='100px'/>";
-}
-
-// staticmethod to accomplish the same...
-function getImageFromCard(cardobj) {
-  return "<img src='images/'" + cardobj.displayPoint + "_of_" + cardobj.suit + ".png'"
-      + " height='140px' width='100px'/>";
+    return "<img src='images/" + this.displayPoint + "_of_" + this.suit + ".png'" + " height='140px' width='100px'/>";
 }
 
 // Draw whatever we need to the screen using JQuery append
@@ -36,14 +29,7 @@ function drawOnScreen(whatHtml, where, how) {
   else if (how === 'replace') {
     $(where).empty().append(whatHtml);
   }
-  // $(where).append(whatHtml);
 }
-
-// function cardsToScreen(card, divName) {
-//   const img_src = "<img src='" + card.getImageUrl() + "' height='140px'"
-//       + " width='100px'/>";
-//   $(divName).append(img_src);
-// }
 
 function calculatePoints(cardArray) {
   console.log(cardArray);
@@ -202,8 +188,6 @@ if (dealerHand.points >= 17
   }
   return false;
 }
-
-
 
 
 ///////////

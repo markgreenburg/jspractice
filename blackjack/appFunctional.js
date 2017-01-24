@@ -16,16 +16,33 @@ const imageGetter = (properties) => ({
       + '_of_' + properties.suit + '.png'
 })
 
-
-
-function hand() {
-  return {
-    cardArray: [],
-    addCard: function(cardObject) {
-      return cardArray.push(cardObject);
-    }
-  };
+const hand = () => {
+  let {
+    cardArray: []
+  }
+  return Object.assign(
 }
+
+const setDiv = (divName) => (divType) => {
+  '#' + divName + '-' + divType;
+}
+
+const cardAdder = (cardObject, divName) => ({
+  addCard: (cardObject, divName) => {
+    // const pointsDiv = setPointsDiv(divName);
+    // const cardsDiv = setHandDiv(divName);
+    const setPerson = setDiv(divName);
+    const pointsDiv = setPerson('-points');
+    const cardsDiv = setPerson('-hand');
+    this.cardArray.push(cardObject);
+    drawOnScreen(cardObject.getImageUrl(), cardsDiv, 'append');
+    this.points = calculatePoints(this.cardArray);
+    drawOnScreen(this.points.toString(), pointsDiv, 'replace');
+    return this.cardArray;
+  }
+})
+
+
 
 function deck() {
   return {
