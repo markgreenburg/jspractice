@@ -45,17 +45,13 @@ function Hand() {
   this.points = 0;
 }
 
+const setDiv = (divName) => (divType) => {
+  return '#' + divName + '-' + divType;
+}
+
 Hand.prototype.addCard = function(cardObject, divName) {
-  let pointsDiv = '';
-  let cardsDiv = '';
-  if (divName === 'player') {
-    pointsDiv = '#player-points';
-    cardsDiv = '#player-hand';
-  }
-  else if (divName === 'dealer') {
-      pointsDiv = '#dealer-points';
-      cardsDiv = '#dealer-hand';
-  }
+  const pointsDiv = setDiv(divName)('points');
+  const cardsDiv = setDiv(divName)('hand');
   this.cardArray.push(cardObject);
   drawOnScreen(cardObject.getImageUrl(), cardsDiv, 'append');
   this.points = calculatePoints(this.cardArray);

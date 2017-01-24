@@ -27,10 +27,8 @@ const setDiv = (divName) => (divType) => {
   '#' + divName + '-' + divType;
 }
 
-const cardAdder = (cardObject, divName) => ({
+const addCard = (cardObject, divName) => ({
   addCard: (cardObject, divName) => {
-    // const pointsDiv = setPointsDiv(divName);
-    // const cardsDiv = setHandDiv(divName);
     const setPerson = setDiv(divName);
     const pointsDiv = setPerson('-points');
     const cardsDiv = setPerson('-hand');
