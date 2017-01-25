@@ -4,91 +4,137 @@
 // point - the point value of the card: a number between 1 and 13.
 // suit - the suit of the card: one of diamonds, clubs, hearts and spades.
 
-// Classical constructors
-function Card(point, suit) {
-  this.displayPoint = point;
-  this.suit = suit;
-  if (this.displayPoint > 10) {
-    this.point = 10;
-  }
-  else {
-    this.point = this.displayPoint;
-  }
+/////////////////////
+// Stateful objects//
+/////////////////////
+
+// A single card
+const card = (displayPoints, suit) => {
+  const cardValue = ( displayPoints > 10 && 10 ) || displayPoints;
+  let state = {
+    "displayPoints": displayPoints,
+    "points": cardValue,
+    "suit": suit
+  };
+  return Object.assign(
+    {},
+    pointsGetter(state),
+    imageUrlGetter(state)
+  )
 }
 
-Card.prototype.getImageUrl = function() {
-    return "<img src='images/" + this.displayPoint + "_of_" + this.suit + ".png'" + " height='140px' width='100px'/>";
+// A hand of cards (given to a player)
+const hand = () => {
+  let state = {
+    "cardArray": [],
+    "points": 0
+  };
+  return Object.assign(
+    {},
+    cardArrayGetter(state),
+    pointsGetter(state),
+    calculatePoints(state)
+  )
 }
 
-// Draw whatever we need to the screen using JQuery append
-// '#dealer-hand', '#player-hand'
-function drawOnScreen(whatHtml, where, how) {
-  if (how === 'append') {
-    $(where).append(whatHtml);
+// A playing deck of cards (can be comprised of any multiple of 52)
+const deck = (numDecks) => {
+  let state = {
+    "cardArray": [],
+    "decks": numDecks
+  };
+  return Object.assign(
+    {},
+    arrayPopulator(state),
+    cardArrayGetter(state),
+    arrayShuffler(state),
+    cardPopper(state)
+  )
+}
+
+//////////////////////
+// Stateless objects//
+//////////////////////
+
+const arrayPopulator = (state) => ({
+  "populateArray": () => {
+    const suits = ["diamonds", "spades", "hearts", "clubs"];
+    const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    for (let deck = 0; deck < state.decks; deck += 1) {
+      for (let suit = 0; suit < suits.length; suit += 1) {
+        for (let point = 0; point < points.length; point += 1) {
+          state.cardArray.push(card(points[point], suits[suit]));
+        }
+      }
+    }
   }
-  else if (how === 'replace') {
-    $(where).empty().append(whatHtml);
+})
+
+const arrayShuffler = (state) => ({
+  "shuffleArray": () => {
+    let tempCard = {};
+    for (let i = state.cardArray.length - 1; i > 0; i -= 1) {
+      let j = Math.floor(Math.random() * i);
+      tempCard = state.cardArray[j];
+      state.cardArray[j] = state.cardArray[i];
+      state.cardArray[i] = tempCard;
+    }
   }
-}
+})
 
-function calculatePoints(cardArray) {
-  console.log(cardArray);
-  return cardArray.reduce(function(a, card) {
-      a += card.point;
-      return a;
-  }, 0);
-}
+const cardPopper = (state) => ({
+  "popCard": () => state.cardArray.pop()
+})
 
-// Class to represent a hand of cards
-function Hand() {
-  this.cardArray = [];
-  this.points = 0;
+const calculatePoints = (state) => ({
+  "calculatePoints": () => {
+    return state.cardArray.reduce((accumulator, card) => {
+      accumulator += card.getPoints();
+      return accumulator;
+    }, 0)
+  }
+})
+
+const cardArrayGetter = (state) => ({
+  "getCardArray": () => state.cardArray
+})
+
+const pointsGetter = (state) => ({
+  "getPoints": () => state.points
+})
+
+const imageUrlGetter = (state) => ({
+  "getImageUrl": () => ("<img src='images/" + state.displayPoints + "_of_" +
+      state.suit + ".png' height='140px' width='100px' />")
+})
+
+// 'Pure' function to get card image URL using the point and suit
+// const getImageUrl = (point) => (suit) => (
+//     "<img src='images/" + point + "_of_" + suit + ".png' height='140px'
+//         width='100px' />"
+//     );
+
+// Draw whatever we need to the screen using JQuery append, defaults to
+// emptying contents before drawing
+const drawOnScreen = (whatHtml, where, how) => {
+  ( how === 'append' && $(where).append(whatHtml)) || $(where).empty().
+      append(whatHtml);
 }
 
 const setDiv = (divName) => (divType) => {
   return '#' + divName + '-' + divType;
 }
 
-Hand.prototype.addCard = function(cardObject, divName) {
+const addCard = (cardObject, divName) => {
   const pointsDiv = setDiv(divName)('points');
   const cardsDiv = setDiv(divName)('hand');
   this.cardArray.push(cardObject);
-  drawOnScreen(cardObject.getImageUrl(), cardsDiv, 'append');
+  drawOnScreen(getImageUrl(cardObject.point)(cardObject.suit), cardsDiv, 'append');
   this.points = calculatePoints(this.cardArray);
   drawOnScreen(this.points.toString(), pointsDiv, 'replace');
   return this.cardArray;
 }
 
-function Deck() {
-  this.cardArray = [];
-  const suits = ["diamonds", "spades", "hearts", "clubs"];
-  const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-  const decks = 3;
-  for (let deck = 0; deck < decks; deck++) {
-    for (let i = 0; i < suits.length; i++) {
-      for (let j = 0; j < points.length; j++) {
-        this.cardArray.push(new Card(points[j], suits[i]));
-      }
-    }
-  }
-}
-
-Deck.prototype.shuffle = function() {
-  let tempCard = {};
-  for (let i = this.cardArray.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * i);
-    tempCard = this.cardArray[j];
-    this.cardArray[j] = this.cardArray[i];
-    this.cardArray[i] = tempCard;
-  }
-}
-
-Deck.prototype.draw = function() {
-  this.totalCards -= 1;
-  return this.cardArray.pop();
-}
-
-// Game class
 function Game() {}
 
 Game.prototype.initializeGame = function() {
@@ -184,27 +230,3 @@ if (dealerHand.points >= 17
   }
   return false;
 }
-
-
-///////////
-// Debug //
-///////////
-// const newDeck = new Deck();
-// console.log("New Deck of cards: ");
-// console.log(newDeck.cardArray);
-// console.log("Shuffling...");
-// newDeck.shuffle();
-// console.log("Shuffled deck: ");
-// console.log(newDeck.cardArray);
-// console.log("Getting a new card...5 of diamonds");
-// const newCard = new Card(5, "diamonds");
-// console.log(newCard);
-// console.log("Printing image path...");
-// console.log(newCard.getImageUrl());
-// console.log("Getting a new hand...");
-// const newHand = new Hand();
-// console.log(newHand);
-// console.log("Adding the card to our hand...")
-// console.log(newHand.addCard(newCard));
-// console.log("Hand is now: ")
-// console.log(newHand);
