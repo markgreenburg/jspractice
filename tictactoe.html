@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tic Tac Toe</title>
+    <!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>-->
+    <script src="jquery.js"></script>
+    <script>
+      $(() => {
+        let turn = "O";
+        $('div.row').on('click', 'button.grid-button', function() {
+          if ($(this).text() === '-') {
+            $(this).find("span.team-ident").text(turn);
+            const moveArray = $('span.team-ident').text();
+            console.log(winnerDetermined(moveArray));
+            //if (winnerDetermined(moveArray) === 'X' ||
+            //    winnerDetermined(moveArray) === 'O') {
+            //      alert(winnerDetermined(moveArray) + 'won!');
+            //}
+            if (turn === "O") {
+              turn = "X";
+            } else {
+              turn = "O"
+            }
+          }
+        });
+      });
+
+    const winnerDetermined = (moveArray) => {
+      //check horizontals
+      for (let i = 0; i < 7; i += 3) {
+        console.log(i);
+        if (moveArray[i] === moveArray[i + 1] === moveArray[i + 2]
+            && moveArray[i] != '-') {
+          return moveArray[i];
+        }
+      }
+      //check verticals
+      for (let i = 0; i < 4; i += 1) {
+        if (moveArray[i] === moveArray[i + 3] === moveArray[i + 6]
+            && moveArray[i] != '-') {
+          return moveArray[i];
+        }
+      }
+      //check diagonals
+      if (moveArray[0] === moveArray[4] === moveArray[8]
+          || moveArray[2] === moveArray[4] === moveArray[6]
+          && moveArray[i] != '-') {
+            return moveArray[i];
+          }
+      return '-'
+    }
+    </script>
+    <style>
+      div.row {
+        width: 100%;
+        height: 100px;
+      }
+      button.grid-button {
+        display: inline-block;
+        height: 100px;
+        width: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='row'>
+      <button class='grid-button'><span class='team-ident'>-</span></button>
+      <button class='grid-button'><span class='team-ident'>-</span></button>
+      <button class='grid-button'><span class='team-ident'>-</span></button>
+    </div>
+    <div class='row'>
+      <button class='grid-button'><span class='team-ident'>-</span></button>
+      <button class='grid-button'><span class='team-ident'>-</span></button>
+      <button class='grid-button'><span class='team-ident'>-</span></button>
+    </div>
+    <div class='row'>
+      <button class='grid-button'><span class='team-ident'>-</span></button>
+      <button class='grid-button'><span class='team-ident'>-</span></button>
+      <button class='grid-button'><span class='team-ident'>-</span></button>
+    </div>
+  </body>
+</html>
