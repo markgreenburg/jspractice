@@ -19,8 +19,9 @@ const card = (displayPoints, suit) => {
 }
 
 // A hand of cards (given to a player)
-const hand = () => {
+const hand = (player) => {
   let state = {
+    "player": player,
     "cardArray": [],
     "points": 0
   };
@@ -28,7 +29,8 @@ const hand = () => {
     {},
     cardArrayGetter(state),
     pointsGetter(state),
-    calculatePoints(state)
+    calculatePoints(state),
+    cardAdder(state)
   )
 }
 
@@ -47,9 +49,27 @@ const deck = (numDecks) => {
   )
 }
 
+const game = () => {
+  let state = {
+    "playerhand": hand(),
+    "dealerhand": hand(),
+    "deck": deck(3)
+  }
+  return Object.assign(
+    {},
+
+  )
+}
+
 //////////////////////
 // Stateless objects//
 //////////////////////
+
+const dealer = (state) => ({
+  "deal": () => {
+    state.dealerhand
+  }
+})
 
 const arrayPopulator = (state) => ({
   "populateArray": () => {
@@ -114,14 +134,14 @@ const setDiv = (divName) => (divType) => {
   return '#' + divName + '-' + divType;
 }
 
-const addCard = (cardObject, divName) => {
-  const pointsDiv = setDiv(divName)('points');
-  const cardsDiv = setDiv(divName)('hand');
-  this.cardArray.push(cardObject);
-  drawOnScreen(getImageUrl(cardObject.point)(cardObject.suit), cardsDiv, 'append');
-  this.points = calculatePoints(this.cardArray);
-  drawOnScreen(this.points.toString(), pointsDiv, 'replace');
-  return this.cardArray;
+const cardAdder = (state) => {
+  state.cardArray.push(deck.popCard());
+  // const pointsDiv = setDiv(divName)('points');
+  // const cardsDiv = setDiv(divName)('hand');
+  // drawOnScreen(getImageUrl(cardObject.point)(cardObject.suit), cardsDiv, 'append');
+  // this.points = calculatePoints(this.cardArray);
+  // drawOnScreen(this.points.toString(), pointsDiv, 'replace');
+  // return this.cardArray;
 }
 
 function Game() {}
@@ -152,56 +172,57 @@ function hitMe(gamedeck, handofcards, divName) {
 }
 
 // Start our game and set up event listeners
-var newGame = new Game();
-newGame.initializeGame();
+// var newGame = new Game();
+// newGame.initializeGame();
 
-document.getElementById('deal-button').addEventListener('click', function() {
-    newGame.deal();
-}, false);
+// document.getElementById('deal-button').addEventListener('click', function() {
+//     newGame.deal();
+// }, false);
 
-document.getElementById('hit-button').addEventListener('click', function() {
-    hitMe(newGame.gameDeck, newGame.playerHand, 'player');
-    if (busted(newGame.playerHand)) {
-      drawOnScreen('You busted, house wins!', '#messages', 'replace');
-    }
-    if (blackjack(newGame.playerHand)) {
-      drawOnScreen('Blackjack! You win!', '#messages', 'replace');
-    }
-}, false);
+// document.getElementById('hit-button').addEventListener('click', function() {
+//     hitMe(newGame.gameDeck, newGame.playerHand, 'player');
+//     if (busted(newGame.playerHand)) {
+//       drawOnScreen('You busted, house wins!', '#messages', 'replace');
+//     }
+//     if (blackjack(newGame.playerHand)) {
+//       drawOnScreen('Blackjack! You win!', '#messages', 'replace');
+//     }
+// }, false);
 
-document.getElementById('stand-button').addEventListener('click', function() {
-while (!dealerMaxReached(newGame.dealerHand)) {
-      hitMe(newGame.gameDeck, newGame.dealerHand, 'dealer');
-    }
-    if (dealerMaxReached(newGame.dealerHand)) {
-      if (busted(newGame.dealerHand)) {
-        drawOnScreen('Dealer busted, you win!', '#messages', 'replace');
-      }
-      else if (!playerWon(newGame.playerHand, newGame.dealerHand)) {
-        drawOnScreen('House wins!', '#messages', 'replace');
-      }
-      else if (playerWon(newGame.playerHand, newGame.dealerHand)) {
-        drawOnScreen('You win!', '#messages', 'replace');
-      }
-    }
-}, false);
+// document.getElementById('stand-button').addEventListener('click', function() {
+// while (!dealerMaxReached(newGame.dealerHand)) {
+//       hitMe(newGame.gameDeck, newGame.dealerHand, 'dealer');
+//     }
+//     if (dealerMaxReached(newGame.dealerHand)) {
+//       if (busted(newGame.dealerHand)) {
+//         drawOnScreen('Dealer busted, you win!', '#messages', 'replace');
+//       }
+//       else if (!playerWon(newGame.playerHand, newGame.dealerHand)) {
+//         drawOnScreen('House wins!', '#messages', 'replace');
+//       }
+//       else if (playerWon(newGame.playerHand, newGame.dealerHand)) {
+//         drawOnScreen('You win!', '#messages', 'replace');
+//       }
+//     }
+// }, false);
 
-// conditions
-// bust condition
-const busted = (cardHand) => { return (cardHand.points > 21 ? true : false); }
+// // conditions
+// // bust condition
+// const busted = (cardHand) => { return (cardHand.points > 21 ? true : false); }
 
-// blackjack
-const blackjack = (cardHand) => {
-  return (cardHand.points === 21 ? true : false);
-}
+// // blackjack
+// const blackjack = (cardHand) => {
+//   return (cardHand.points === 21 ? true : false);
+// }
 
-//Dealer stays condition
-const dealerMaxReached = (cardHand) => {
-  return (cardHand.points >= 17 ? true : false);
-}
+// //Dealer stays condition
+// const dealerMaxReached = (cardHand) => {
+//   return (cardHand.points >= 17 ? true : false);
+// }
 
-//Forced win
-const playerWon = (playerPoints, dealerPoints) => {
-  return ((dealerPoints >= 17 ? true : false)
-      && (playerPoints > dealerPoints ? true : false));
-}
+// //Forced win
+// const playerWon = (playerPoints, dealerPoints) => {
+//   return ((dealerPoints >= 17 ? true : false)
+//       && (playerPoints > dealerPoints ? true : false));
+// }
+
