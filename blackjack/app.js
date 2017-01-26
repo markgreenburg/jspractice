@@ -1,9 +1,4 @@
 'use strict';
-// You will implement the rest of these exercises using Test-Driven Development.
-// Create a constructor Card. A card object will have 2 properties:
-// point - the point value of the card: a number between 1 and 13.
-// suit - the suit of the card: one of diamonds, clubs, hearts and spades.
-
 /////////////////////
 // Stateful objects//
 /////////////////////
@@ -11,7 +6,7 @@
 // A single card
 const card = (displayPoints, suit) => {
   const cardValue = ( displayPoints > 10 && 10 ) || displayPoints;
-  let state = {
+  const state = {
     "displayPoints": displayPoints,
     "points": cardValue,
     "suit": suit
@@ -50,6 +45,15 @@ const deck = (numDecks) => {
     arrayShuffler(state),
     cardPopper(state)
   )
+}
+
+// Stand in for game mechanics
+const dealer = () => {
+  const state = {};
+  return Object.assign(
+    {},
+    // some functions here
+  ) 
 }
 
 //////////////////////
@@ -108,13 +112,7 @@ const imageUrlGetter = (state) => ({
       state.suit + ".png' height='140px' width='100px' />")
 })
 
-// 'Pure' function to get card image URL using the point and suit
-// const getImageUrl = (point) => (suit) => (
-//     "<img src='images/" + point + "_of_" + suit + ".png' height='140px'
-//         width='100px' />"
-//     );
-
-// Draw whatever we need to the screen using JQuery append, defaults to
+// Draw whatever we need to the screen using JQuery, defaults to
 // emptying contents before drawing
 const drawOnScreen = (whatHtml, where, how) => {
   ( how === 'append' && $(where).append(whatHtml)) || $(where).empty().
@@ -199,34 +197,20 @@ while (!dealerMaxReached(newGame.dealerHand)) {
 
 // conditions
 // bust condition
-function busted(cardHand) {
-  if (cardHand.points > 21) {
-    return true;
-  }
-  return false;
-}
+const busted = (cardHand) => { return (cardHand.points > 21 ? true : false); }
 
 // blackjack
-function blackjack(cardHand) {
-  if (cardHand.points === 21) {
-    return true;
-  }
-  return false;
+const blackjack = (cardHand) => {
+  return (cardHand.points === 21 ? true : false);
 }
 
 //Dealer stays condition
-function dealerMaxReached(cardHand) {
-  if (cardHand.points >= 17) {
-    return true;
-  }
-  return false;
+const dealerMaxReached = (cardHand) => {
+  return (cardHand.points >= 17 ? true : false);
 }
 
 //Forced win
-function playerWon(playerHand, dealerHand) {
-if (dealerHand.points >= 17
-    && playerHand.points > dealerHand.points) {
-    return true;
-  }
-  return false;
+const playerWon = (playerPoints, dealerPoints) => {
+  return ((dealerPoints >= 17 ? true : false)
+      && (playerPoints > dealerPoints ? true : false));
 }
