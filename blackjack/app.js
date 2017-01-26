@@ -47,15 +47,6 @@ const deck = (numDecks) => {
   )
 }
 
-// Stand in for game mechanics
-const dealer = () => {
-  const state = {};
-  return Object.assign(
-    {},
-    // some functions here
-  ) 
-}
-
 //////////////////////
 // Stateless objects//
 //////////////////////
