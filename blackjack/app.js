@@ -56,7 +56,7 @@ const game = () => {
     "deck": deck(3)
   }
   return Object.assign(
-    {},
+    {}
 
   )
 }
@@ -73,17 +73,16 @@ const dealer = (state) => ({
 
 const arrayPopulator = (state) => ({
   "populateArray": () => {
-    const suits = ["diamonds", "spades", "hearts", "clubs"];
-    const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    for (let deck = 0; deck < state.decks; deck += 1) {
-      for (let suit = 0; suit < suits.length; suit += 1) {
-        for (let point = 0; point < points.length; point += 1) {
-          state.cardArray.push(card(points[point], suits[suit]));
-        }
+    let decksToMake = (state.decks === undefined ? 1 : state.decks);
+    for (let deck = 0; deck < decksToMake; deck += 1) {
+      const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+      points.forEach((point) => {
+        const suits = ["diamonds", "spades", "clubs", "hearts"];
+        suits.forEach((suit) => state.cardArray.push(card(point, suit)));
+        })
       }
     }
-  }
-})
+  })
 
 const arrayShuffler = (state) => ({
   "shuffleArray": () => {

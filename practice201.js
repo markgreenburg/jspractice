@@ -131,3 +131,27 @@ squareRoot(16, (num) => { return Math.sqrt(num) });
 // Call using our pre-defined function...
 squareRoot(16, actuallyDivide);
 
+const card = (displayPoints, suit) => {
+  const cardValue = ( displayPoints > 10 && 10 ) || displayPoints;
+  const state = {
+    "displayPoints": displayPoints,
+    "points": cardValue,
+    "suit": suit
+  };
+  return Object.assign(
+    {},
+    pointsGetter(state),
+    imageUrlGetter(state)
+  )
+}
+
+const arrayPopulator = (state) => {
+  const decksToMake = new Array(state.decks);
+  decksToMake.forEach((deck) => {
+    const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    points.forEach((point) => {
+      const suits = ["diamonds", "spades", "clubs", "hearts"];
+      suits.forEach((suit) => state.cardArray.push(card(point, suit)));
+    });
+  });
+}
