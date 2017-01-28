@@ -6,10 +6,11 @@
     <script src="/static/jquery.js"></script>
     <script src="/static/todo.js"></script>
     <link href="/static/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
   </head>
   <body>
     <form id="form">
-      <input id="new-task" type="text" name="task" placeholder="What to do?">
+      <input id="new-task" type="text" name="task" placeholder="What to do?" minlength="1" required>
     </form>
     <ul id="task-list"></ul>
     <div class="button-bar">
