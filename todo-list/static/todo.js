@@ -19,7 +19,7 @@ $(() => {
  * calling append function.
  */
 let appendAll = () => {
-  $.get("/tasks", (response) => {
+  $.get("/list_tasks", (response) => {
     response.forEach(appendTask);
     response.forEach(toggleStrikethrough);
   })
