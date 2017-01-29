@@ -2,7 +2,7 @@
     es6
 */
 
-'use strict';
+"use strict";
 
 /**
  * Main On Ready JQuery listener:
