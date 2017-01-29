@@ -1,13 +1,17 @@
 /**
- * Appends a given task's description to task list. Expects an object
- * with a "description" attribute. 
+ * Main On Ready JQuery listener:
+ * appendAll: Renders all non-deleted tasks on screen
+ * addTask: Adds a task to the list and POSTs to DB on Enter keydown
+ * updateTask: Updates a task's description and is_done on click of
+ *             a task's checkbox. Crosses out marked tasks
+ * removeTask: Removes all checked tasks from DB
  */
-let appendTask = (taskObj) => {
-    const taskHtml = "<li id='" + taskObj.task_id + "'><input " +
-        "class='check-done' type='checkbox'" + " name='is_done' />" + 
-        taskObj.description + "</li>";
-    $("ul#task-list").append(taskHtml);
-}
+$(() => {
+  appendAll();
+  addTask("form#form");
+  updateTask("ul#task-list");
+  removeTask("button#remove-completed");
+});
 
 /**
  * Submits GET request to /tasks endpoint, which returns list of all undeleted
@@ -22,57 +26,16 @@ let appendAll = () => {
 }
 
 /**
- * Posts data to the add_task endpoint and, on success, appends the newly-added
- * task's description to the task list. If request fails, generates object 
- * literal with an error message as value for its "description" attribute.
+ * Appends a given task's description to task list. Expects an object
+ * with a "description" attribute. 
  */
-let postNewTask = (data) => {
-  console.log(data);
-  $.ajax({
-      type: "POST",
-      url: "/add_task",
-      data: data,
-      success: function(response) {
-        appendTask(response);
-        $("form#form > input").val("");
-      },
-      error: function() {
-        console.log("warning, task not saved!");
-      }
-  });
+let appendTask = (taskObj) => {
+    const taskHtml = "<li id='" + taskObj.task_id + "'><input " +
+        "class='check-done' type='checkbox'" + " name='is_done' />" + 
+        taskObj.description + "</li>";
+    $("ul#task-list").append(taskHtml);
 }
 
-/**
- * Posts task updates and on success hands off to 
- * function that controls striking through list items
- */
-let postTaskUpdate = (data) => {
-  $.ajax({
-    type: "POST",
-    url: "/update_task",
-    data: data,
-    // success: toggleStrikethrough,
-    success: toggleStrikethrough,
-    error: () => console.log("Oops, something went wrong!")
-  })
-}
-
-let hideDeleted = (response) => {
-  response.forEach((task) => {
-    $("li#" + task.task_id).remove();
-  })
-}
-
-let setDelete = (idArray) => {
-  console.log(idArray);
-  $.ajax({
-    type: "POST",
-    url: "/delete_tasks",
-    data: { "task_ids": idArray },
-    success: hideDeleted,
-    error: () => console.log("Oops, something went wrong!")
-  })
-}
 /**
  * Checks whether task is completed and toggles strikethrough class accordingly
  */
@@ -96,6 +59,29 @@ let addTask = (selector) => {
   });
 }
 
+/**
+ * Posts data to the add_task endpoint and, on success, appends the newly-added
+ * task's description to the task list. If request fails, generates object 
+ * literal with an error message as value for its "description" attribute.
+ */
+let postNewTask = (data) => {
+  $.ajax({
+      type: "POST",
+      url: "/add_task",
+      data: data,
+      success: function(response) {
+        appendTask(response);
+        $("form#form > input").val("");
+      },
+      error: function() {
+        console.log("warning, task not saved!");
+      }
+  });
+}
+
+/**
+ * Listener for task checkbox clicks, passes new checked state to POST function
+ */
 let updateTask = (selector) => {
   $(selector).on("click", "input.check-done", function () {
     const taskObj = {
@@ -108,29 +94,63 @@ let updateTask = (selector) => {
 }
 
 /**
- * Main On Ready JQuery listener:
- * appendAll: Renders all non-deleted tasks on screen
- * addTask: Adds a task to the list and POSTs to DB on Enter keydown
- * updateTask: Updates a task's description and is_done on click of
- *             a task's checkbox. Crosses out marked tasks
- * removeDone: Removes all checked tasks from DB
+ * Posts task updates and on success hands off to 
+ * function that controls striking through list items
  */
-$(() => {
-  appendAll();
-  addTask("form#form");
-  updateTask("ul#task-list");
-  removeDone("button#remove-completed");
-});
-
-let getIds = (selector) => {
-  return Number($(selector).attr('id'));
+let postTaskUpdate = (data) => {
+  $.ajax({
+    type: "POST",
+    url: "/update_task",
+    data: data,
+    success: toggleStrikethrough,
+    error: () => console.log("Oops, something went wrong!")
+  })
 }
 
-let removeDone = (selector) => {
+/**
+ * Listener that checks for clicks of the remove tasks button. When clicked,
+ * all list items that have a strikethrough class applied are added to an
+ * array and passed to POST function for soft deletion (sets delete property
+ * to True in DB)
+ */
+let removeTask = (selector) => {
   $(selector).on('click', () => {
     const selectorArray = Array.from($('li.strikethrough'));
     const task_ids = selectorArray.map(getIds);
     setDelete(task_ids);
   })
 }
+
+/**
+ * Map helper function that gets the JS Number value of the id attribute of a
+ * given selector
+ */
+let getIds = (selector) => {
+  return Number($(selector).attr('id'));
+}
+
+/**
+ * Sends array of task IDs to delete via POST to server. On success, calls
+ * function to hide the deleted results from the list else logs to console.
+ */
+let setDelete = (idArray) => {
+  console.log(idArray);
+  $.ajax({
+    type: "POST",
+    url: "/delete_tasks",
+    data: { "task_ids": idArray },
+    success: hideDeleted,
+    error: () => console.log("Oops, something went wrong!")
+  })
+}
+
+/**
+ * Removes list items of deleted tasks from DOM
+ */
+let hideDeleted = (response) => {
+  response.forEach((task) => {
+    $("li#" + task.task_id).remove();
+  })
+}
+
 
