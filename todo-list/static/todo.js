@@ -53,7 +53,7 @@ let toggleStrikethrough = (response) => {
  * Serializes and passes a form's contents to AJAX POST function
  */
 let addTask = (selector) => {
-  $(selector).submit(function(event) {
+  $(selector).submit((event) => {
     event.preventDefault();
     postNewTask($(selector).serialize());
   });
@@ -69,11 +69,11 @@ let postNewTask = (data) => {
       type: "POST",
       url: "/add_task",
       data: data,
-      success: function(response) {
+      success: (response) => {
         appendTask(response);
         $("form#form > input").val("");
       },
-      error: function() {
+      error: () => {
         console.log("warning, task not saved!");
       }
   });
@@ -83,7 +83,7 @@ let postNewTask = (data) => {
  * Listener for task checkbox clicks, passes new checked state to POST function
  */
 let updateTask = (selector) => {
-  $(selector).on("click", "input.check-done", function () {
+  $(selector).on("click", "input.check-done", () => {
     const taskObj = {
         "is_done": $(this).prop('checked'),
         "task_id": Number($(this).parent().attr('id')),
