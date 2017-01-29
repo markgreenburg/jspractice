@@ -32,7 +32,7 @@ class Task(object):
         Gets all undeleted tasks from DB and returns them as a list of task
         dicts
         """
-        sql = ("SELECT id FROM task WHERE NOT deleted")
+        sql = ("SELECT id FROM task WHERE NOT deleted ORDER BY id ASC")
         tasks_id_obj = DbConnect.get_named_results(sql, False)
         task_obj_list = []
         for task in tasks_id_obj:

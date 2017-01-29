@@ -16,8 +16,8 @@ let appendTask = (taskObj) => {
  */
 let appendAll = () => {
   $.get("/tasks", (response) => {
-    console.log(response);
     response.forEach(appendTask);
+    response.forEach(toggleStrikethrough);
   })
 }
 
@@ -27,17 +27,63 @@ let appendAll = () => {
  * literal with an error message as value for its "description" attribute.
  */
 let postNewTask = (data) => {
+  console.log(data);
   $.ajax({
       type: "POST",
       url: "/add_task",
       data: data,
       success: function(response) {
         appendTask(response);
+        $("form#form > input").val("");
       },
       error: function() {
-        appendTask({description: "Sorry, I forgot that task!"});
+        console.log("warning, task not saved!");
       }
   });
+}
+
+/**
+ * Posts task updates and on success hands off to 
+ * function that controls striking through list items
+ */
+let postTaskUpdate = (data) => {
+  $.ajax({
+    type: "POST",
+    url: "/update_task",
+    data: data,
+    // success: toggleStrikethrough,
+    success: toggleStrikethrough,
+    error: () => console.log("Oops, something went wrong!")
+  })
+}
+
+let hideDeleted = (response) => {
+  response.forEach((task) => {
+    $("li#" + task.task_id).remove();
+  })
+}
+
+let setDelete = (idArray) => {
+  console.log(idArray);
+  $.ajax({
+    type: "POST",
+    url: "/delete_tasks",
+    data: { "task_ids": idArray },
+    success: hideDeleted,
+    error: () => console.log("Oops, something went wrong!")
+  })
+}
+/**
+ * Checks whether task is completed and toggles strikethrough class accordingly
+ */
+let toggleStrikethrough = (response) => {
+  const selector = "li#" + response.task_id.toString();
+  if (response.is_done === "true" || response.is_done === true) { 
+    $(selector).addClass("strikethrough");
+    $(selector + " > input.check-done").prop("checked", true);
+  } else if (response.is_done !== "true" || response.is_done === false) {
+    $(selector).removeClass("strikethrough");
+  }
 }
 
 /**
@@ -51,19 +97,40 @@ let addTask = (selector) => {
 }
 
 let updateTask = (selector) => {
-  // Update the task in the db
-    // Then change the strikethrough
+  $(selector).on("click", "input.check-done", function () {
+    const taskObj = {
+        "is_done": $(this).prop('checked'),
+        "task_id": Number($(this).parent().attr('id')),
+        "description": $(this).parent().text()
+    };
+    postTaskUpdate(taskObj);
+  });
 }
 
 /**
- * Main JQuery listener, waits for page ready
+ * Main On Ready JQuery listener:
+ * appendAll: Renders all non-deleted tasks on screen
+ * addTask: Adds a task to the list and POSTs to DB on Enter keydown
+ * updateTask: Updates a task's description and is_done on click of
+ *             a task's checkbox. Crosses out marked tasks
+ * removeDone: Removes all checked tasks from DB
  */
 $(() => {
   appendAll();
   addTask("form#form");
-  $("input.check-done").click(function () {
-    const is_done = $(this).prop('checked')
-    console.log(is_done);
-  });
+  updateTask("ul#task-list");
+  removeDone("button#remove-completed");
 });
+
+let getIds = (selector) => {
+  return Number($(selector).attr('id'));
+}
+
+let removeDone = (selector) => {
+  $(selector).on('click', () => {
+    const selectorArray = Array.from($('li.strikethrough'));
+    const task_ids = selectorArray.map(getIds);
+    setDelete(task_ids);
+  })
+}
 
