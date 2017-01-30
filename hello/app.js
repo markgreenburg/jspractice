@@ -32,12 +32,32 @@ app.get("/hello/:name", (req, res) => {
     res.send("Hello, " + name + "!");
 });
 
+app.get("/name/:name/age/:age", (req, res) => {
+    const data = {
+        "name": req.params.name,
+        "born": 2017 - Number(req.params.age || 0)
+    };
+    res.render("nameBorn.hbs", data);
+});
+
 /**
  * We can also use query string parameters to accomplish the same...
  */
 app.get('/hello', (req, res) => {
     const name = req.query.name || 'world';
     res.send("Hello, " + name + "!");
+});
+
+/**
+ * Another example of query params, where we're rendering the data to a
+ * Handlebards template.
+ */
+app.get('/year', (req, res) => {
+    const born = Number(req.query.born || '0');
+    const age = {
+        "age": 2017 - born
+    };
+    res.render("displayAge", age);
 });
 
 /**
