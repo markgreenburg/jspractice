@@ -1,11 +1,3 @@
-/* Set canvas */
-var canvas = document.getElementById('game');
-var ctx = canvas.getContext('2d');
-canvas.width = 512;
-canvas.height = 480;
-const background = new Image();
-background.src = "images/background.png";
-
 /**
  * Character Factories
  */
@@ -32,10 +24,10 @@ const hero = () => {
     )
 };
 
-/* Goblin */
-const goblin = () => {
+/* Monster */
+const monster = () => {
     let state = {
-        "name": "goblin",
+        "name": "monster",
         "speedX": 1,
         "speedY": 1,
         "posX": 100, // change these
@@ -110,16 +102,25 @@ const directionChanger = (state) => ({
             } else if (state.posY < 30) {
                 state.speedY = 2;
             }
-        } else if (state.name === "goblin") {
-            if (state.posX > width) {
-                state.posX = 0;
-            } else if (state.posX < 0) {
-                state.posX = width;
-            }
-            if (state.posY > height) {
-                state.posY = 0;
-            } else if (state.posY < 0) {
-                state.posY = height;
+        } else if (state.name === "monster") {
+            const newDirection = getRand(1, 4);
+            switch (newDirection) {
+                case 1:
+                    state.speedX = 0;
+                    state.speedY = -1 * state.speedY;
+                    break;
+                case 2:
+                    state.speedY = 0;
+                    break;
+                case 3:
+                    state.speedX = 0;
+                    break;
+                case 4:
+                    state.speedX = -1 * state.speedX;
+                    state.speedY = 0;
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -137,14 +138,45 @@ const boundsChecker = (state) => ({
             state.posY = 0;
         }
         if (state.posY < 0) {
-            state.posY = heigh;
+            state.posY = height;
         }
     }
 });
 
-/* Refresh frame */
-const game = () => {
-    document.onLoad()
+/**
+ * Game functions
+ */
+
+/* Get random whole number for direction changes */
+const getRand = (min, max) => {
+    const minInt = Math.ceil(min);
+    const maxInt = Math.floor(max);
+    return Math.floor(Math.random() * (maxInt - minInt + 1)) + min;
 }
 
-const animate = () => requestAnimationFrame(draw);
+/* Update position of characters */
+// const updatePos = (characterState, canvasState) {
+
+/**
+ * Redraw screen
+ */
+// const animate = () => requestAnimationFrame(draw);
+
+/* Set canvas */
+
+const draw = () => {
+    var canvas = document.getElementById('game');
+    var ctx = canvas.getContext('2d');
+    canvas.width = 512;
+    canvas.height = 480;
+    const background = new Image();
+    background.src = "images/background.png";
+    ctx.drawImage(background, 0, 0);
+    const hero = hero();
+    const heroImageLink = hero.getImage();
+    ctx.drawImage(heroImageLink, 0, 0);
+    // Game functions go here
+    window.requestAnimationFrame(draw);
+};
+
+draw();
