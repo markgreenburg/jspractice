@@ -22,7 +22,7 @@ $(() => {
 
     // When user starts typing
     $("form#chat-form").keydown(() => {
-        socket.emit("typing", "user is typing...");
+        socket.emit("typing");
         return true;
     });
 
@@ -37,8 +37,19 @@ $(() => {
     // New connection to chat room
     socket.on("entered chatroom", (msg) => {
         $("#flashes").append($("<li>").text(msg));
-        setTimeout(() => {
-        $("#flashes > li").remove();
-        }, 5000);            
+        removeFirstFlash();       
     });
+
+    // User disconnects from chat room
+    socket.on("disconnect notice", (msg) => {
+        $("#flashes").append($("<li>").text(msg));
+        removeFirstFlash();
+    })
 });
+
+// Helper that removes first flash in list after 5 seconds
+const removeFirstFlash = () => {
+    setTimeout(() => {
+        $("#flashes > li:first-child").remove();
+        }, 5000);
+};

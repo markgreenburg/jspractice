@@ -10,18 +10,25 @@ app.get('/', (req, res) => {
 });
 
 io.on("connection", (socket) => {
-    // socket.broadcast.emit("connect notice", "new user connected");
+    // When username received, broadcast notice to all other connections
     socket.on("entered chatroom", (nickname) => {
-        socket.broadcast.emit("entered chatroom", nickname + " entered the chatroom");
+        socket.broadcast.emit("entered chatroom", nickname + " has joined");
         socket.username = nickname;
     });
-    socket.on("chat message", (msg) => socket.broadcast.emit("chat message", socket.username + ": " + msg));
+    
+    // When new chat message received, broadcast it to all other connections
+    socket.on("chat message", (msg) => {
+        socket.broadcast.emit("chat message", socket.username + ": " + msg)
+    });
+
+    // When user disconnects, broadcast notice to all other connections
     socket.on("disconnect", () => {
-        socket.broadcast.emit("disconnect notice", "user disconnected");
+        socket.broadcast.emit("disconnect notice", socket.username + 
+            " has left");
+        console.log(socket.username);
     });
 });
 
 http.listen(3000, () => {
     console.log('listening on *:3000');
 });
-
