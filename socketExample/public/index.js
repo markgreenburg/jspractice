@@ -48,7 +48,7 @@ $(() => {
 
     // New chat message received
     socket.on("chat message", (msg) => {
-        $("#messages").append($("<li>").text(socket.username + ": " + msg));
+        $("#messages").append($("<li>").text(msg));
     });
 
     // User typing notification

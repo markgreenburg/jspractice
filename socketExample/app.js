@@ -18,7 +18,8 @@ io.on("connection", (socket) => {
     
     // When new chat message received, broadcast it to all other connections
     socket.on("chat message", (msg) => {
-        socket.broadcast.emit("chat message", msg)
+        const chatLine = socket.username + ": " + msg;
+        socket.broadcast.emit("chat message", chatLine);
     });
 
     // When user done typing, broadcast info to all other connections
