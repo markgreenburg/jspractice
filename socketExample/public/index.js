@@ -49,6 +49,9 @@ $(() => {
     });
 
     // Get list of current actives (for newly-connected sockets)
+    console.log("socket id: ");
+    console.log(socket.id);
+    console.log("listening for populate actives...");
     socket.on("populate actives", (activeUsers) => {
         console.log("Got user list: ");
         console.log(activeUsers);
@@ -60,6 +63,8 @@ $(() => {
         const userRecord = $("<li id='" + user + "'>");
         $("#active-users").append(userRecord.text(user));
     }
+    console.log("socket id: ");
+    console.log(socket.id);
 
     // New chat message received
     socket.on("chat message", (msg) => {
@@ -84,6 +89,7 @@ $(() => {
     socket.on("disconnect notice", (user) => {
         $("#flashes").append($("<li>").text(user + " has left"));
         removeFirstFlash();
+        $("ul#active-users li#" + user).remove();
     });
 });
 

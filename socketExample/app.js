@@ -17,8 +17,15 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("entered chatroom", socket.username);
         console.log("The socket ID registered is:");
         console.log(socket.id);
-        socket.broadcast.to(socket.id).emit("populate actives", activeUsers);
+        console.log("sending activeUsers list to new ID:");
+        console.log(activeUsers);
+        setTimeout(() => {
+            console.log("broadcasting...");
+            socket.broadcast.to(socket.id).emit("populate actives");
+        }, 3000);
         activeUsers.push(socket.username);
+        console.log("showing final activeuser list");
+        console.log(activeUsers);
     });
     
     // When new chat message received, broadcast it to all other connections
