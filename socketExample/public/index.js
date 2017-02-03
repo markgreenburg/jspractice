@@ -9,6 +9,7 @@ $(() => {
     // When user's nickname is submitted
     $("form#nickname-form").submit(() => {
         socket.username = $("input#nickname-input").val();
+        users.push(socket.username);
         socket.emit("entered chatroom", socket.username);
         $("div#nickname-div").hide();
         $("div#chat-div").show();
@@ -68,7 +69,11 @@ $(() => {
     socket.on("disconnect notice", (user) => {
         $("#flashes").append($("<li>").text(user + " has left"));
         removeFirstFlash();
+        users.filter(excludeDisconnected);
     });
+
+    // Disconnection list filter helper
+    const excludeDisconnected = (user) => (user !== socket.username);
 });
 
 /* Timeout Helpers */

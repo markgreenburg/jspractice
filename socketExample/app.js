@@ -9,8 +9,6 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-let users = [];
-
 io.on("connection", (socket) => {
     // When username received, broadcast notice to all other connections
     socket.on("entered chatroom", (nickname) => {
@@ -36,12 +34,8 @@ io.on("connection", (socket) => {
     // When user disconnects, broadcast notice to all other connections
     socket.on("disconnect", () => {
         socket.broadcast.emit("disconnect notice", socket.username);
-        users.filter(removeDisconnected);
     });
 });
-
-// Remove disconnected users
-const removeDisconnected = (user) => (user !== socket.username);
 
 http.listen(3000, () => {
     console.log('listening on *:3000');
