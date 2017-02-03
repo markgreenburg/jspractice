@@ -11,3 +11,4 @@ __To-Do__
 1. Modularize server-side code
 2. Add collaborative text edit functionality
 3. Styling
+4. Capture and log messages(?)
