@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+let activeUsers = [];
 
 app.use(express.static('public'));
 
@@ -14,6 +15,10 @@ io.on("connection", (socket) => {
     socket.on("entered chatroom", (nickname) => {
         socket.username = nickname;
         socket.broadcast.emit("entered chatroom", socket.username);
+        console.log("The socket ID registered is:");
+        console.log(socket.id);
+        socket.broadcast.to(socket.id).emit("populate actives", activeUsers);
+        activeUsers.push(socket.username);
     });
     
     // When new chat message received, broadcast it to all other connections
@@ -34,8 +39,15 @@ io.on("connection", (socket) => {
 
     // When user disconnects, broadcast notice to all other connections
     socket.on("disconnect", () => {
+        filteredUsers = activeUsers.filter(removeDisconnected);
+        activeUsers = filteredUsers;
         socket.broadcast.emit("disconnect notice", socket.username);
     });
+
+    // Disconnection list filter helper
+    const removeDisconnected = (user) => {
+        return (user != socket.username);
+    };
 });
 
 http.listen(3000, () => {

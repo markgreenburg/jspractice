@@ -2,26 +2,49 @@
 <html>
   <head>
     <title>Socket.IO chat</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" 
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <!-- Own Styles -->
     <link rel='stylesheet' type='text/css' href='style.css' />
   </head>
   <body>
-    <div id='nickname-div'>
+    <div class='container' id='nickname-div'>
       <form id='nickname-form' action=''>
-        <input id='nickname-input' type='text' minlength='2' maxlength='12' placeholder='nickname' required />
-          <button id='nickname-submit'>Enter Chat</button>
+        <div class='input-group'>
+          <input id='nickname-input' class='form-control' type='text' minlength='2' maxlength='12' placeholder='nickname' required />
+          <span class='input-group-btn'>
+            <button type='button' class='btn btn-default' id='nickname-submit'>Enter Chat</button>
+          </span>
+        </div>
       </form>
     </div>
-    <div id='chat-div'>
-      <ul id='flashes'></ul>
-      <ul id='messages'></ul>
-      <div id='is-typing'></div>
-      <form id='chat-form' action=''>
-        <input id='m' autocomplete='off' /><button>Send</button>
-      </form>
+    <div class='container' id='chat-div'>
+      <div class="row">
+        <div class="col-sm-9 col-xs-12">
+          <ul id='flashes'></ul>
+          <ul id='messages'></ul>
+          <div id='is-typing'></div>
+          <form id='chat-form' action=''>
+            <div class='input-group'>
+              <input id='m' class='form-control' autocomplete='off' type='text'minlength='1' />
+              <span class='input-group-btn'>
+                <button type='button' class='btn btn-default'>Send</button>
+              </span>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+          <h4>Active Users</h4>
+          <ul id='active-users'></ul>
+        </div>
+      </div>
     </div>
-    <script src='/socket.io/socket.io.js'></script>
+    <!--JS-->
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'>
     </script>
+    <script src='/socket.io/socket.io.js'></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="index.js"></script>
   </body>
 </html>

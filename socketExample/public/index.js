@@ -1,15 +1,15 @@
 $(() => {
     let socket = io();
     let typingTimeout = 0;
-    let users = [];
 
     /** 
     * Emiters
     */
     // When user's nickname is submitted
     $("form#nickname-form").submit(() => {
+        console.log("New socket ID created:");
+        console.log(socket.id);
         socket.username = $("input#nickname-input").val();
-        users.push(socket.username);
         socket.emit("entered chatroom", socket.username);
         $("div#nickname-div").hide();
         $("div#chat-div").show();
@@ -43,8 +43,23 @@ $(() => {
     // New connection to chat room
     socket.on("entered chatroom", (user) => {
         $("#flashes").append($("<li>").text(user + " has joined!"));
-        removeFirstFlash();       
+        removeFirstFlash();
+        const userRecord = $("<li id='" + user + "'>");
+        $("ul#active-users").append(userRecord.text(user));
     });
+
+    // Get list of current actives (for newly-connected sockets)
+    socket.on("populate actives", (activeUsers) => {
+        console.log("Got user list: ");
+        console.log(activeUsers);
+        activeUsers.forEach(appendToUserList);
+    });
+
+    // forEach helper
+    const appendToUserList = (user) => {
+        const userRecord = $("<li id='" + user + "'>");
+        $("#active-users").append(userRecord.text(user));
+    }
 
     // New chat message received
     socket.on("chat message", (msg) => {
@@ -69,11 +84,7 @@ $(() => {
     socket.on("disconnect notice", (user) => {
         $("#flashes").append($("<li>").text(user + " has left"));
         removeFirstFlash();
-        users.filter(excludeDisconnected);
     });
-
-    // Disconnection list filter helper
-    const excludeDisconnected = (user) => (user !== socket.username);
 });
 
 /* Timeout Helpers */
