@@ -20,12 +20,8 @@ io.on("connection", (socket) => {
                 activeUsers);
         }
         setTimeout(() => {
-                    console.log(activeUsers);
-                    console.log("pushing...");
                     activeUsers.push(socket.username);
-                    console.log("done");
-                    console.log(activeUsers);
-                }, 1000);
+            }, 1000);
     });
     
     // When new chat message received, broadcast it to all other connections

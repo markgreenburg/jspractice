@@ -7,8 +7,6 @@ $(() => {
     */
     // New connection to chat room
     socket.on("connect", () => {
-        console.log("I am connected!");
-        console.log(socket.id);
         socket.on("entered chatroom", (user) => {
             $("#flashes").append($("<li>").text(user + " has joined!"));
             removeFirstFlash();
@@ -18,8 +16,6 @@ $(() => {
 
         // Get list of current actives (for newly-connected sockets)
         socket.on("populate actives", (activeUsers) => {
-            console.log("Got user list: ");
-            console.log(activeUsers);
             activeUsers.forEach(appendToUserList);
         });
 
@@ -27,9 +23,7 @@ $(() => {
         const appendToUserList = (user) => {
             const userRecord = $("<li id='" + user + "'>");
             $("#active-users").append(userRecord.text(user));
-        }
-        console.log("socket id: ");
-        console.log(socket.id);
+        };
 
         // New chat message received
         socket.on("chat message", (msg) => {
@@ -71,8 +65,6 @@ $(() => {
     */
     // When user's nickname is submitted
     $("form#nickname-form").submit(() => {
-        console.log("New socket ID created:");
-        console.log(socket.id);
         socket.username = $("input#nickname-input").val();
         socket.emit("entered chatroom", socket.username);
         $("div#nickname-div").hide();
