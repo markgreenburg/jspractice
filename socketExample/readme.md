@@ -1,4 +1,4 @@
-**sockets.io demonstrator using realtime webchat, Node, and Express**
+**sockets.io demonstrator using realtime webchat, Node, Express, and Bootstrap**
 
 __Features__
 * Spin up a chat between multiple users
