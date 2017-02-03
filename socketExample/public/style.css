@@ -11,6 +11,10 @@ div#chat-div {
     display: none;
 }
 
+div#is-typing {
+    display: hidden;
+}
+
 form#chat-form {
     background: #000;
     padding: 3px;
