@@ -38,3 +38,7 @@ form#chat-form {
 #messages li:nth-child(odd) {
     background: #eee;
 }
+
+ul#active-users li {
+    text-align: center;
+}

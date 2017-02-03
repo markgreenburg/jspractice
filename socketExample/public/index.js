@@ -10,7 +10,8 @@ $(() => {
         socket.on("entered chatroom", (user) => {
             $("#flashes").append($("<li>").text(user + " has joined!"));
             removeFirstFlash();
-            const userRecord = $("<li id='" + user + "'>");
+            const userRecord = $("<li class='list-group-item' id='" + user 
+                + "'>");
             $("ul#active-users").append(userRecord.text(user));
         });
 
@@ -21,7 +22,8 @@ $(() => {
 
         // forEach helper
         const appendToUserList = (user) => {
-            const userRecord = $("<li id='" + user + "'>");
+            const userRecord = $("<li class='list-group-item' id='" + user 
+                + "'>");
             $("#active-users").append(userRecord.text(user));
         };
 
