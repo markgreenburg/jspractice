@@ -25,7 +25,6 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         socket.broadcast.emit("disconnect notice", socket.username + 
             " has left");
-        console.log(socket.username);
     });
 });
 

@@ -47,7 +47,7 @@ $(() => {
     })
 });
 
-// Helper that removes first flash in list after 5 seconds
+// Removes first flash from list in list after 5 seconds
 const removeFirstFlash = () => {
     setTimeout(() => {
         $("#flashes > li:first-child").remove();
