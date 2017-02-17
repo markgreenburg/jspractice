@@ -11,8 +11,9 @@ __Setup__
 * For testing on localhost, app listens on port 3000.
 * To start http server, `cd path_to_app_root && node app.js`
 
-__To-Do__
-1. Find and fix active user sync bug (active users list duplicates certain users under certain circumstances)
-2. Add collaborative text edit functionality
-3. Styling
-4. Capture and log messages(?)
+__To-Do__  
+1. Find and fix active user sync bug (active users list duplicates certain users under certain circumstances)  
+2. Add collaborative text edit functionality  
+3. Styling  
+4. Capture and log messages(?)  
+
