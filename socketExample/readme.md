@@ -7,8 +7,11 @@ __Features__
 * Typing notifications: see when other users are typing as they type
 * See active users
 
+__Setup__
+* For testing on localhost, app listens on port 3000.
+* To start http server, `cd path_to_app_root && node app.js`
+
 __To-Do__
-1. Modularize server-side code
-2. Add collaborative text edit functionality
-3. Styling
-4. Capture and log messages(?)
+1. Add collaborative text edit functionality
+2. Styling
+3. Capture and log messages(?)
