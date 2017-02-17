@@ -42,9 +42,7 @@ $(() => {
         });
 
         // User done typing notification (when form submitted)
-        socket.on("typing finished", (user) => {
-            $("div#is-typing").hide();
-        });
+        socket.on("typing finished", () => $("div#is-typing").hide());
 
         // User disconnects from chat room
         socket.on("disconnect notice", (user) => {

@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
     });
 
     // When user done typing, broadcast info to all other connections
-    socket.on("done typing", (user) => {
+    socket.on("done typing", () => {
         socket.broadcast.emit("typing finished", socket.username);
     });
 
@@ -42,8 +42,7 @@ io.on("connection", (socket) => {
 
     // When user disconnects, broadcast notice to all other connections
     socket.on("disconnect", () => {
-        filteredUsers = activeUsers.filter(removeDisconnected);
-        activeUsers = filteredUsers;
+        activeUsers = activeUsers.filter(removeDisconnected);
         socket.broadcast.emit("disconnect notice", socket.username);
     });
 
