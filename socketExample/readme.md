@@ -12,6 +12,7 @@ __Setup__
 * To start http server, `cd path_to_app_root && node app.js`
 
 __To-Do__
-1. Add collaborative text edit functionality
-2. Styling
-3. Capture and log messages(?)
+1. Find and fix active user sync bug (active users list duplicates certain users under certain circumstances)
+2. Add collaborative text edit functionality
+3. Styling
+4. Capture and log messages(?)
