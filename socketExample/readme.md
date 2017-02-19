@@ -9,7 +9,11 @@ __Features__
 
 __Setup__
 * For testing on localhost, app listens on port 3000.
-* To start http server, `cd path_to_app_root && node app.js`
+* To start http server, `cd path_to_app_root && npm install && node app.js`
+
+__Dependencies__
+* Dependencies should be resolved via `npm install` automatically
+* All dependencies are listed in /package.json if curious
 
 __To-Do__  
 1. Find and fix active user sync bug (active users list duplicates certain users under certain circumstances)  
