@@ -81,7 +81,7 @@ $(() => {
         return false;
     });
 
-    // When user starts typing
+    // When user starts typing a message
     $("form#chat-form").keydown(() => {
         socket.emit("started typing");
         return true;
