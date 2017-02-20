@@ -1,11 +1,13 @@
 'use strict';
-// Dependencies
+// Dependencies & server setup
 const express = require('express');
-const path = require('path');
-const mongoose = require('mongoose');
-
-// Get new express instance for the app
 const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const path = require('path');
+// const mongoose = require('mongoose');
+// Test socket.io collab implementation with a global
+let text = "";
 
 // Load routers
 const client = require('./routes/client');
@@ -22,7 +24,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', client);
 app.use('/api', api);
 
-app.listen(3000, () => {
+// When user connects to socket
+io.on("connection", (socket) => {
+    // Pre-populate client's editor with most recent text
+    if (io.sockets.connected[socket.id]) {
+        io.sockets.connected[socket.id].emit("populate editor", text);
+    }
+    // When new text changes received, broadcast new text to all sockets except 
+    // originator
+    socket.on("text changed", (newText) => {
+        // Copy the changes to server
+        text = newText;
+        // Emit server's version back to everyone else
+        socket.broadcast.emit("text changed", text);
+    });
+});
+
+http.listen(3000, () => {
     console.log('listening on *:3000');
 });
 
