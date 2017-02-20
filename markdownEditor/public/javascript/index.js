@@ -7,7 +7,7 @@ window.onload = () => {
      * Markdown converter
      */
     const updateMarkdown = () => {
-        textMarkdown.innerHTML = marked(textPad.value);
+        textMarkdown.innerHTML = marked(textPad.value); // from CDN
     };
 
     /**
@@ -29,7 +29,6 @@ window.onload = () => {
          socket.on("text changed", (newText) => {
              textPad.value = newText;
              updateMarkdown();
-
          });
 
          /* Emiters */
