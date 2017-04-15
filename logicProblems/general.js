@@ -31,7 +31,8 @@ const getMaxProfit = (stockArray) => {
             potentialProfit = stockArray[i] - value;
             
             // If greater than scoped profit value, overwrite scoped profit var
-            largestProfit = Math.max(potentialProfit, largestProfit);
+            largestProfit = (potentialProfit > largestProfit ? 
+                    potentialProfit : largestProfit);
         }
     });
 
@@ -51,7 +52,7 @@ const loserStockArray = [ 499, 495, 494, 493, 492, 491, 490, 489, 488, 487, 486,
 
 // Run function with some "tests", print output to stdout
 console.log("// Initialize an array of stock prices to test logic against");
-console.log(getMaxProfit());
+console.log(getMaxProfit(stockArray));
 console.log("// How about if the last timestamp had the highest price?");
 console.log(getMaxProfit(stockArrayHighestLast));
 console.log("// How about if the last timestamp had the lowest price?");
