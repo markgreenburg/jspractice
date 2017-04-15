@@ -14,15 +14,17 @@ No "shorting"—you must buy before you sell. You may not buy and sell in the sa
 const getMaxProfit = (stockArray) => {
     
     // Ensure input exists and has at least two prices to evaluate
-    if (typeof stockArray === "undefined" || stockArray.length < 2) {
-        throw new Error("need at least two prices");
+    if (typeof stockArray === "undefined" 
+            || !Array.isArray(stockArray)
+            || stockArray.length < 2) {
+        throw new Error("need at least two prices passed as an array");
     }
 
     // Initialize min price
     let minPrice = stockArray[0];
 
     // Initialize profit
-    let bestProfit = stockArray[1] - stockArray[0];
+    let bestProfit = stockArray[1] - minPrice;
 
     // Iterate through array
     stockArray.forEach((currentPrice, index) => {
@@ -55,11 +57,69 @@ const stockArrayLowestLast = [ 499, 429, 513, 499, 512, 509, 487, 495, 514, 535,
 const loserStockArray = [ 499, 495, 494, 493, 492, 491, 490, 489, 488, 487, 486, 485 ];
 
 // Run function with some "tests", print output to stdout
-console.log("// Initialize an array of stock prices to test logic against");
-console.log(getMaxProfit(stockArray));
-console.log("// How about if the last timestamp had the highest price?");
-console.log(getMaxProfit(stockArrayHighestLast));
-console.log("// How about if the last timestamp had the lowest price?");
-console.log(getMaxProfit(stockArrayLowestLast));
-console.log("// How about if the stock only lost money yesterday?");
-console.log(getMaxProfit(loserStockArray));
+// console.log("// Initialize an array of stock prices to test logic against");
+// console.log(getMaxProfit(stockArray));
+// console.log("// How about if the last timestamp had the highest price?");
+// console.log(getMaxProfit(stockArrayHighestLast));
+// console.log("// How about if the last timestamp had the lowest price?");
+// console.log(getMaxProfit(stockArrayLowestLast));
+// console.log("// How about if the stock only lost money yesterday?");
+// console.log(getMaxProfit(loserStockArray));
+
+/**
+You have an array of integers, and for each index you want to find the product of every integer except the integer at that index.
+Write a function getProductsOfAllIntsExceptAtIndex() that takes an array of integers and returns an array of the products.
+
+Do not use division in your solution.
+ */
+
+// Using Greedy approach...
+const getAllProductsExceptIndex = (inputArray) => {
+
+    // Ensure input integrity
+    if (typeof inputArray === "undefined" 
+            || !Array.isArray(inputArray)
+            || inputArray.length < 2) {
+        throw new Error("Must provide an array of at least two numbers");
+    }
+    
+    // Initialize the final products array
+    let productsWithoutIndex = [];
+
+    // Initialize product to 1
+    let productSoFar = 1;
+
+    // Loop through the input and calculate the products of all numbers before
+    // each index
+    inputArray.forEach((value) => {
+
+        // Check that a number input was provided
+        if (typeof value !== "number") {
+            throw new Error("All inputs must be numbers!");
+        }
+
+        // Save the calculated product to the final products array
+        productsWithoutIndex = [...productsWithoutIndex, productSoFar];
+
+        // Multiply the current product with the current index's value
+        productSoFar *= value;
+    });
+
+    // Do same as above but in reverse order to get products of all numbers
+    // after each index
+    productSoFar = 1;
+
+    for (let i = inputArray.length - 1; i >= 0; i--) {
+
+        // Mutate the final product array with the after-index product
+        productsWithoutIndex[i] *= productSoFar;
+        // Multiply afterIndex product by current index
+        productSoFar *= inputArray[i];
+    }
+
+    return productsWithoutIndex;
+}
+
+const productArray = [10, 8, 12, 3, 1, 15, 7, 5]; // [ 453600, 567000, 378000, 504000, 4536000, 302400, 648000, 907200 ]
+console.log(getAllProductsExceptIndex(productArray));
+
