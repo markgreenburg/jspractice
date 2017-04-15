@@ -11,35 +11,6 @@ Write an efficient function that takes stockPricesYesterday and returns the best
 No "shorting"—you must buy before you sell. You may not buy and sell in the same time step (at least 1 minute must pass).
  */
 
-const slowProfitCalc = (stockArray) => {
-    
-    // Ensure input exists and has at least two prices to evaluate
-    if (typeof stockArray === "undefined" || stockArray.length < 2) {
-        throw new Error("need at least two prices");
-    }
-
-    // Initialize profit variable
-    let largestProfit = stockArray[1] - stockArray[0];
-
-    // Iterate through array
-    stockArray.forEach((value, index) => {
-
-        // Iterate through rest of array
-        for (let i = index + 1; i <= (stockArray.length); i ++) {
-            
-            // Calculate profit as i - value
-            potentialProfit = stockArray[i] - value;
-            
-            // If greater than scoped profit value, overwrite scoped profit var
-            largestProfit = (potentialProfit > largestProfit ? 
-                    potentialProfit : largestProfit);
-        }
-    });
-
-    // Return greatest profit
-    return largestProfit;
-}
-
 const getMaxProfit = (stockArray) => {
     
     // Ensure input exists and has at least two prices to evaluate
