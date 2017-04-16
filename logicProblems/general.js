@@ -46,26 +46,6 @@ const getMaxProfit = (stockArray) => {
     return bestProfit;
 }
 
-
-// Initialize an array of stock prices to test logic against
-const stockArray = [ 499, 429, 513, 499, 512, 509, 487, 495, 514, 535, 512, 511, 525 ]; // 535 - 429 = 106
-// How about if the last timestamp had the highest price?
-const stockArrayHighestLast = [ 499, 429, 513, 499, 512, 509, 487, 495, 514, 535, 512, 511, 549 ]; // 549 - 429 = 120
-// How about if the last timestamp had the lowest price?
-const stockArrayLowestLast = [ 499, 429, 513, 499, 512, 509, 487, 495, 514, 535, 512, 511, 419 ]; // 535 - 429 = 106
-// How about if the stock only lost money yesterday?
-const loserStockArray = [ 499, 495, 494, 493, 492, 491, 490, 489, 488, 487, 486, 485 ];
-
-// Run function with some "tests", print output to stdout
-// console.log("// Initialize an array of stock prices to test logic against");
-// console.log(getMaxProfit(stockArray));
-// console.log("// How about if the last timestamp had the highest price?");
-// console.log(getMaxProfit(stockArrayHighestLast));
-// console.log("// How about if the last timestamp had the lowest price?");
-// console.log(getMaxProfit(stockArrayLowestLast));
-// console.log("// How about if the stock only lost money yesterday?");
-// console.log(getMaxProfit(loserStockArray));
-
 /**
 You have an array of integers, and for each index you want to find the product of every integer except the integer at that index.
 Write a function getProductsOfAllIntsExceptAtIndex() that takes an array of integers and returns an array of the products.
@@ -120,6 +100,88 @@ const getAllProductsExceptIndex = (inputArray) => {
     return productsWithoutIndex;
 }
 
+/**
+Write a function to find the 2nd largest element in a binary search tree
+Tree class spec:
+
+function BinaryTreeNode(value) {
+    this.value = value;
+    this.left  = null;
+    this.right = null;
+}
+
+BinaryTreeNode.prototype.insertLeft = function(value) {
+    this.left = new BinaryTreeNode(value);
+    return this.left;
+};
+
+BinaryTreeNode.prototype.insertRight = function(value) {
+    this.right = new BinaryTreeNode(value);
+    return this.right;
+};
+
+ */
+
+// First, implement a function to find the largest element in the tree
+const findLargestElement = (node) => {
+
+    // Check that the tree has at least one node
+    if (!node) { throw new Error("Tree must have at least one node") }
+
+    // Run through the tree recursively until we find the right-most node
+    if (node.right) { return findLargestElement(node.right) }
+    
+    // Return the value of the right-most node
+    return node.value;
+}
+
+// Then, implement function to find the largest element in the tree
+const findSecondLargestElement = (node) => {
+    
+    // Ensure tree has at least two nodes
+    if (!node.left && !node.right) {
+        throw new Error("Tree must have at least one node")
+    }
+
+    // Account for largest node having a left subtree
+    if (!node.right && node.left) { return findLargestElement(node.left) }
+
+    // Account for current node being parent of largest node where largest node
+    // has no left subtree
+    if (!node.right.right && !node.right.left && node.right) {
+        return node.value;
+    }
+
+    // Otherwise, we're elsewhere in tree and need to continue to step right
+    return findSecondLargestElement(node.right);
+}
+
+
+
+
+
+
+/**
+"Tests" - uncomment as needed
+TO-DO: Implement tests via Jasmine in separate module
+// Initialize an array of stock prices to test logic against
+const stockArray = [ 499, 429, 513, 499, 512, 509, 487, 495, 514, 535, 512, 511, 525 ]; // 535 - 429 = 106
+// How about if the last timestamp had the highest price?
+const stockArrayHighestLast = [ 499, 429, 513, 499, 512, 509, 487, 495, 514, 535, 512, 511, 549 ]; // 549 - 429 = 120
+// How about if the last timestamp had the lowest price?
+const stockArrayLowestLast = [ 499, 429, 513, 499, 512, 509, 487, 495, 514, 535, 512, 511, 419 ]; // 535 - 429 = 106
+// How about if the stock only lost money yesterday?
+const loserStockArray = [ 499, 495, 494, 493, 492, 491, 490, 489, 488, 487, 486, 485 ];
+
+// console.log("// Initialize an array of stock prices to test logic against");
+// console.log(getMaxProfit(stockArray));
+// console.log("// How about if the last timestamp had the highest price?");
+// console.log(getMaxProfit(stockArrayHighestLast));
+// console.log("// How about if the last timestamp had the lowest price?");
+// console.log(getMaxProfit(stockArrayLowestLast));
+// console.log("// How about if the stock only lost money yesterday?");
+// console.log(getMaxProfit(loserStockArray));
+
 const productArray = [10, 8, 12, 3, 1, 15, 7, 5]; // [ 453600, 567000, 378000, 504000, 4536000, 302400, 648000, 907200 ]
 console.log(getAllProductsExceptIndex(productArray));
-
+ */
