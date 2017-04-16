@@ -130,46 +130,65 @@ The input arrayOfInts will always have at least three integers.
 const getHighestThree = (inputArray) => {
 
     // Initialize vars to keep track of largest numbers
-    let highest = null;
-    let second = null;
-    let third = null;
+    // let highest = null;
+    // let second = null;
+    // let third = null;
 
     // Loop through to find the largest three positive numbers in array
-    inputArray.forEach((value, index) => {
+    // inputArray.forEach((value, index) => {
         // If value places in top three, bump lower positions down
-        if (value > highest) {
-            third = second;
-            second = highest;
-            highest = value;
-        } else if (value > second) {
-            third = second;
-            second = value;
-        } else if (value > third) {
-            third = value;
-        }
-    });
+    //     if (value > highest) {
+    //         third = second;
+    //         second = highest;
+    //         highest = value;
+    //     } else if (value > second) {
+    //         third = second;
+    //         second = value;
+    //     } else if (value > third) {
+    //         third = value;
+    //     }
+    // });
 
     // Loop through again to find 3 largest absolute numbers
-    let absHighest = null;
-    let absSecond = null;
-    let absThird = null;
-    inputArray.forEach((value) => {
-        if (Math.abs(value) > Math.abs(absHighest)) {
-            absThird = absSecond;
-            absSecond = absHighest;
-            absHighest = value;
-        } else if (Math.abs(value) > Math.abs(absSecond)) {
-            absThird = absSecond;
-            absSecond = value;
-        } else if (Math.abs(value) > Math.abs(absThird)) {
-            absThird = value;
-        }
-    });
+    // let absHighest = null;
+    // let absSecond = null;
+    // let absThird = null;
+    // inputArray.forEach((value) => {
+    //     if (Math.abs(value) > Math.abs(absHighest)) {
+    //         absThird = absSecond;
+    //         absSecond = absHighest;
+    //         absHighest = value;
+    //     } else if (Math.abs(value) > Math.abs(absSecond)) {
+    //         absThird = absSecond;
+    //         absSecond = value;
+    //     } else if (Math.abs(value) > Math.abs(absThird)) {
+    //         absThird = value;
+    //     }
+    // });
 
     // Multiply largest three values and return result
-    const positiveLargestProduct = highest * second * third;
-    const absLargestProduct = absHighest * absSecond * absThird;
-    return Math.max(positiveLargestProduct, absLargestProduct);
+    // const positiveLargestProduct = highest * second * third;
+    // const absLargestProduct = absHighest * absSecond * absThird;
+    // return Math.max(positiveLargestProduct, absLargestProduct);
+
+    // Alternative approach...
+    let highest = Math.max(inputArray[0], inputArray[1]);
+    let lowest = Math.min(inputArray[0], inputArray[1]);
+    let highestTwoProduct = highest * lowest;
+    let lowestTwoProduct = highest * lowest;
+    let highestThreeProduct = highestTwoProduct * inputArray[2];
+
+    // Loop through the array, updating all of our data at each step
+    inputArray.forEach((value, index) => {
+        if (index < 2) { return }
+        highestThreeProduct = Math.max(value * highestTwoProduct, value * lowestTwoProduct, highestThreeProduct);
+        highestTwoProduct = Math.max(value * highest, value * lowest, highestTwoProduct);
+        lowestTwoProduct = Math.min(value * lowest, value * highest, lowestTwoProduct);
+        highest = Math.max(value, highest);
+        lowest = Math.min(value, lowest);
+    });
+    
+    return highestThreeProduct;
 }
 
 console.log(getHighestThree([-10, -10, 1, 3, 2]));
