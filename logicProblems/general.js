@@ -101,28 +101,6 @@ const getAllProductsExceptIndex = (inputArray) => {
 }
 
 /**
-Write a function to find the 2nd largest element in a binary search tree
-Tree class spec:
-
-function BinaryTreeNode(value) {
-    this.value = value;
-    this.left  = null;
-    this.right = null;
-}
-
-BinaryTreeNode.prototype.insertLeft = function(value) {
-    this.left = new BinaryTreeNode(value);
-    return this.left;
-};
-
-BinaryTreeNode.prototype.insertRight = function(value) {
-    this.right = new BinaryTreeNode(value);
-    return this.right;
-};
-
- */
-
-/**
 Given an array of integers, find the highest product you can get from three of the integers.
 The input arrayOfInts will always have at least three integers.
  */
@@ -149,7 +127,115 @@ const getHighestThree = (inputArray) => {
     return highestThreeProduct;
 }
 
-console.log(getHighestThree([-10, -10, 1, 3, 2]));
+
+/**
+Write a function mergeRanges() that takes an array of meeting time ranges and returns an array of condensed ranges.
+
+For example, given:
+
+  [
+    {startTime: 0,  endTime: 1},
+    {startTime: 3,  endTime: 5},
+    {startTime: 4,  endTime: 8},
+    {startTime: 10, endTime: 12},
+    {startTime: 9,  endTime: 10},
+]
+
+your function would return:
+
+  [
+    {startTime: 0, endTime: 1},
+    {startTime: 3, endTime: 8},
+    {startTime: 9, endTime: 12},
+]
+
+Do not assume the meetings are in order. The meeting times are coming from multiple teams.
+
+Write a solution that's efficient even when we can't put a nice upper bound on the numbers representing our time ranges.
+ */
+
+const mergeRanges = (inputArray) => {
+    // Create an array of merged meeting times, seed with first meeting from input
+    let mergedTimes = [inputArray[0]];
+    
+    // Loop through the input array, starting at second index
+    inputArray.forEach((meeting, index) => {
+        // Set a flag for new so that we know when to update vs add new item to merged array
+        let addNewMeeting = true;
+
+        // Loop through each meeting in the merged arrray to compare
+        mergedTimes.forEach((mergedMeeting) => {
+            
+            // If the next meeting start overlaps with any existing meeting
+            if (meeting.startTime >= mergedMeeting.startTime && 
+                    meeting.startTime <= mergedMeeting.endTime) {
+                // end time of existing meeting is greatest of existing and next end times
+                mergedMeeting.endTime = Math.max(mergedMeeting.endTime, meeting.endTime);
+                addNewMeeting = false;
+                return;
+            }
+            
+            // If the next meeting end time overlaps with any existing meeting
+            if (meeting.endTime <= mergedMeeting.endTime && 
+                    meeting.endTime >= mergedMeeting.startTime) {
+                // start time of existing meeting is least of existing and next start times
+                mergedMeeting.startTime = Math.min(mergedMeeting.startTime, meeting.startTime);
+                addNewMeeting = false;
+                return;
+            }
+
+            // Since neither of the above is true at this point, set flag so outer loop knows to add
+        });
+
+        // Actually add to array if addNewMeeting flag is true...flag is reset at top of loop
+        if (addNewMeeting) {
+            mergedTimes = [...mergedTimes, meeting];
+        }
+    });
+    return mergedTimes;
+}
+
+// const meetings =   [
+//     {startTime: 0,  endTime: 1},
+//     {startTime: 3,  endTime: 5},
+//     {startTime: 4,  endTime: 8},
+//     {startTime: 10, endTime: 12},
+//     {startTime: 9,  endTime: 10},
+// ];
+
+const meetings = [
+    {startTime: 1, endTime: 10},
+    {startTime: 2, endTime: 6},
+    {startTime: 3, endTime: 5},
+    {startTime: 7, endTime: 9},
+    {startTime: 12, endTime: 14},
+]
+
+console.log(mergeRanges(meetings));
+
+/**
+Write a function to find the 2nd largest element in a binary search tree
+Tree class spec:
+
+function BinaryTreeNode(value) {
+    this.value = value;
+    this.left  = null;
+    this.right = null;
+}
+
+BinaryTreeNode.prototype.insertLeft = function(value) {
+    this.left = new BinaryTreeNode(value);
+    return this.left;
+};
+
+BinaryTreeNode.prototype.insertRight = function(value) {
+    this.right = new BinaryTreeNode(value);
+    return this.right;
+};
+
+ */
+
+
 
 // First, implement a function to find the largest element in the tree
 const findLargestElement = (node) => {
@@ -223,4 +309,5 @@ const loserStockArray = [ 499, 495, 494, 493, 492, 491, 490, 489, 488, 487, 486,
 
 const productArray = [10, 8, 12, 3, 1, 15, 7, 5]; // [ 453600, 567000, 378000, 504000, 4536000, 302400, 648000, 907200 ]
 console.log(getAllProductsExceptIndex(productArray));
+console.log(getHighestThree([-10, -10, 1, 3, 2]));
  */
