@@ -128,11 +128,12 @@ const findLargestElement = (node) => {
     // Check that the tree has at least one node
     if (!node) { throw new Error("Tree must have at least one node") }
 
-    // Run through the tree recursively until we find the right-most node
-    if (node.right) { return findLargestElement(node.right) }
-    
-    // Return the value of the right-most node
-    return node.value;
+    // Traverse tree until the right-most element is hit - return its value
+    let current = node;
+    while (current) {
+        if (!current.right) { return current.value }
+        current = current.right;
+    }
 }
 
 // Then, implement function to find the largest element in the tree
@@ -140,20 +141,29 @@ const findSecondLargestElement = (node) => {
     
     // Ensure tree has at least two nodes
     if (!node.left && !node.right) {
-        throw new Error("Tree must have at least one node")
+        throw new Error("Tree must have at least two nodes");
     }
 
-    // Account for largest node having a left subtree
-    if (!node.right && node.left) { return findLargestElement(node.left) }
+    // Loop through tree until we find the second largest element
+    let current = node;
+    while (current) {
+        
+        // Account for largest node having a left subtree
+        if (!current.right && current.left) {
+            return findLargestElement(current.left);
+        }
+        
+        // Account for current node being parent of largest node where largest node
+        // has no left subtree
+        if (current.right && 
+                !current.right.right && 
+                !current.right.left) {
+            return current.value;
+        }
 
-    // Account for current node being parent of largest node where largest node
-    // has no left subtree
-    if (!node.right.right && !node.right.left && node.right) {
-        return node.value;
+        // Otherwise we're not at the second largest node, continue right
+        current = current.right;
     }
-
-    // Otherwise, we're elsewhere in tree and need to continue to step right
-    return findSecondLargestElement(node.right);
 }
 
 
