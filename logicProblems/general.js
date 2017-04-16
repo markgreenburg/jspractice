@@ -122,6 +122,58 @@ BinaryTreeNode.prototype.insertRight = function(value) {
 
  */
 
+/**
+Given an array of integers, find the highest product you can get from three of the integers.
+The input arrayOfInts will always have at least three integers.
+ */
+
+const getHighestThree = (inputArray) => {
+
+    // Initialize vars to keep track of largest numbers
+    let highest = null;
+    let second = null;
+    let third = null;
+
+    // Loop through to find the largest three positive numbers in array
+    inputArray.forEach((value, index) => {
+        // If value places in top three, bump lower positions down
+        if (value > highest) {
+            third = second;
+            second = highest;
+            highest = value;
+        } else if (value > second) {
+            third = second;
+            second = value;
+        } else if (value > third) {
+            third = value;
+        }
+    });
+
+    // Loop through again to find 3 largest absolute numbers
+    let absHighest = null;
+    let absSecond = null;
+    let absThird = null;
+    inputArray.forEach((value) => {
+        if (Math.abs(value) > Math.abs(absHighest)) {
+            absThird = absSecond;
+            absSecond = absHighest;
+            absHighest = value;
+        } else if (Math.abs(value) > Math.abs(absSecond)) {
+            absThird = absSecond;
+            absSecond = value;
+        } else if (Math.abs(value) > Math.abs(absThird)) {
+            absThird = value;
+        }
+    });
+
+    // Multiply largest three values and return result
+    const positiveLargestProduct = highest * second * third;
+    const absLargestProduct = absHighest * absSecond * absThird;
+    return Math.max(positiveLargestProduct, absLargestProduct);
+}
+
+console.log(getHighestThree([-10, -10, 1, 3, 2]));
+
 // First, implement a function to find the largest element in the tree
 const findLargestElement = (node) => {
 
