@@ -155,61 +155,41 @@ Write a solution that's efficient even when we can't put a nice upper bound on t
  */
 
 const mergeRanges = (inputArray) => {
-    // Create an array of merged meeting times, seed with first meeting from input
-    let mergedTimes = [inputArray[0]];
     
-    // Loop through the input array, starting at second index
-    inputArray.forEach((meeting, index) => {
-        // Set a flag for new so that we know when to update vs add new item to merged array
-        let addNewMeeting = true;
-
-        // Loop through each meeting in the merged arrray to compare
-        mergedTimes.forEach((mergedMeeting) => {
-            
-            // If the next meeting start overlaps with any existing meeting
-            if (meeting.startTime >= mergedMeeting.startTime && 
-                    meeting.startTime <= mergedMeeting.endTime) {
-                // end time of existing meeting is greatest of existing and next end times
-                mergedMeeting.endTime = Math.max(mergedMeeting.endTime, meeting.endTime);
-                addNewMeeting = false;
-                return;
-            }
-            
-            // If the next meeting end time overlaps with any existing meeting
-            if (meeting.endTime <= mergedMeeting.endTime && 
-                    meeting.endTime >= mergedMeeting.startTime) {
-                // start time of existing meeting is least of existing and next start times
-                mergedMeeting.startTime = Math.min(mergedMeeting.startTime, meeting.startTime);
-                addNewMeeting = false;
-                return;
-            }
-
-            // Since neither of the above is true at this point, set flag so outer loop knows to add
-        });
-
-        // Actually add to array if addNewMeeting flag is true...flag is reset at top of loop
-        if (addNewMeeting) {
-            mergedTimes = [...mergedTimes, meeting];
-        }
+    // First we'll need to sort our meetings by start time
+    const sortedMeetings = inputArray.sort((a, b) => {
+        if (a.startTime < b.startTime) { return -1 }
+        else if (a. startTime > b.startTime) { return 1 }
+        else { return 0 }
     });
-    return mergedTimes;
+
+    // Set up a new array to hold our merged meetings; seed with first meeting
+    let mergedMeetings = [sortedMeetings[0]];
+
+    // Loop through list starting at second index, merging as necessary
+    sortedMeetings.forEach((currentMeeting, index) => {
+        if (index === 0) { return }
+
+        // If current meeting starts before last meeting ended, merge them
+        const lastMeeting = mergedMeetings[mergedMeetings.length - 1];
+        if (currentMeeting.startTime <= lastMeeting.endTime) {
+            lastMeeting.endTime = Math.max(currentMeeting.endTime, lastMeeting.endTime);
+        
+        // Else meeting can't be merged further ... add it to mergedMeetings array
+        } else { mergedMeetings = [...mergedMeetings, currentMeeting]; }
+    });
+
+    // Finally, return the array of merged meetings
+    return mergedMeetings;
 }
 
-// const meetings =   [
-//     {startTime: 0,  endTime: 1},
-//     {startTime: 3,  endTime: 5},
-//     {startTime: 4,  endTime: 8},
-//     {startTime: 10, endTime: 12},
-//     {startTime: 9,  endTime: 10},
-// ];
-
-const meetings = [
-    {startTime: 1, endTime: 10},
-    {startTime: 2, endTime: 6},
-    {startTime: 3, endTime: 5},
-    {startTime: 7, endTime: 9},
-    {startTime: 12, endTime: 14},
-]
+const meetings =   [
+    {startTime: 0,  endTime: 1},
+    {startTime: 3,  endTime: 5},
+    {startTime: 4,  endTime: 8},
+    {startTime: 10, endTime: 12},
+    {startTime: 9,  endTime: 10},
+];
 
 console.log(mergeRanges(meetings));
 
