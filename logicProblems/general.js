@@ -130,29 +130,9 @@ const getHighestThree = (inputArray) => {
 
 /**
 Write a function mergeRanges() that takes an array of meeting time ranges and returns an array of condensed ranges.
-
-For example, given:
-
-  [
-    {startTime: 0,  endTime: 1},
-    {startTime: 3,  endTime: 5},
-    {startTime: 4,  endTime: 8},
-    {startTime: 10, endTime: 12},
-    {startTime: 9,  endTime: 10},
-]
-
-your function would return:
-
-  [
-    {startTime: 0, endTime: 1},
-    {startTime: 3, endTime: 8},
-    {startTime: 9, endTime: 12},
-]
-
 Do not assume the meetings are in order. The meeting times are coming from multiple teams.
-
 Write a solution that's efficient even when we can't put a nice upper bound on the numbers representing our time ranges.
- */
+*/
 
 const mergeRanges = (inputArray) => {
     
@@ -195,27 +175,7 @@ console.log(mergeRanges(meetings));
 
 /**
 Write a function to find the 2nd largest element in a binary search tree
-Tree class spec:
-
-function BinaryTreeNode(value) {
-    this.value = value;
-    this.left  = null;
-    this.right = null;
-}
-
-BinaryTreeNode.prototype.insertLeft = function(value) {
-    this.left = new BinaryTreeNode(value);
-    return this.left;
-};
-
-BinaryTreeNode.prototype.insertRight = function(value) {
-    this.right = new BinaryTreeNode(value);
-    return this.right;
-};
-
- */
-
-
+*/
 
 // First, implement a function to find the largest element in the tree
 const findLargestElement = (node) => {
