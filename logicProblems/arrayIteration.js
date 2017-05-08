@@ -10,25 +10,20 @@ populatedArray.forEach((value) => {
     if (value%3 === 0 && value%5 === 0) { console.log(value) }
 });
 
-
-console.log("Second way, classic for loop...");
-
-// Create classic 'for loop' and iterate through it
-for (let i = 0; i <= 100; i ++) {
-    if (i%3 === 0 && i%5 === 0) {
-        console.log(i);
-    }
+// Using less memory, in one go
+console.log("With a for loop: ");
+for (let i = 1; i <= 100; i++) {
+    if (i%3 === 0 && i%5 === 0) { console.log(i) }
 }
 
 /* Find the smallest value in an integer array without sorting it */
-const minArray = [0, 1, 2, -50, -12, 100, 0];
+const minArray = [0, 1, 2, -50, -12, 100, -100];
 
 // Using forEach
 let currentMin = minArray[0];
 minArray.forEach((val) => {
     if (val < currentMin) {
         currentMin = val;
-        return;
     }
 });
 
@@ -37,9 +32,14 @@ const reduced = minArray.reduce((accum, val) => {
     return (val < accum ? val : accum);
 }, minArray[0]);
 
+// Reduce again
+const minOfArray = minArray.reduce((accum, val) => {
+    return (val < accum ? val : accum);
+}, minArray[0]);
+
 // Using classic for loop
 let currentMinFor = minArray[0];
-for (let i = 0; i <= minArray.length; i++) {
+for (let i = 0; i < minArray.length; i++) {
     if (minArray[i] < currentMinFor) {
         currentMinFor = minArray[i];
     }
@@ -47,6 +47,7 @@ for (let i = 0; i <= minArray.length; i++) {
 
 // Answers using each type of method
 console.log(currentMin);
+console.log(minOfArray);
 console.log(reduced);
 console.log(currentMinFor);
 

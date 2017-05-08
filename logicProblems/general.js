@@ -163,15 +163,56 @@ const mergeRanges = (inputArray) => {
     return mergedMeetings;
 }
 
-const meetings =   [
-    {startTime: 0,  endTime: 1},
-    {startTime: 3,  endTime: 5},
-    {startTime: 4,  endTime: 8},
-    {startTime: 10, endTime: 12},
-    {startTime: 9,  endTime: 10},
-];
+/**
+You quirky boss collects rare, old coins...
+They found out you're a programmer and asked you to solve something they've been wondering for a long time.
 
-console.log(mergeRanges(meetings));
+Write a function that, given:
+
+an amount of money
+an array of coin denominations
+computes the number of ways to make the amount of money with coins of the available denominations.
+
+Example: for amount=4 (4¢) and denominations=[1,2,3] (1¢, 2¢ and 3¢), your program would output 
+4—the number of ways to make 44¢ with those denominations:
+
+1¢, 1¢, 1¢, 1¢
+1¢, 1¢, 2¢
+1¢, 3¢
+2¢, 2¢
+
+*/
+const moneyPossibilities = (amountLeft, denominations, currentIndex) => {
+
+    currentIndex = currentIndex || 0;
+
+    // Amount is hit spot on
+    if (amountLeft === 0) { return 1 }
+    
+    // Overshot, so don't count toward total
+    if (amountLeft < 0) { return 0 }
+
+    // No denominations left to use
+    if (currentIndex === denominations.length) { return 0 }
+
+    console.log("Checking ways to make " + amountLeft + " with " + denominations.slice(currentIndex));
+
+    // Select current coin
+    const currentCoin = denominations[currentIndex];
+
+    // See how many possibilities we can get for
+    // each number of times to use current coin
+    let numPossibilities = 0;
+    while (amountLeft >= 0) {
+        numPossibilities += moneyPossibilities(amountLeft, denominations, currentIndex + 1);
+        amountLeft -= currentCoin;
+    }
+
+    return numPossibilities;
+
+}
+
+console.log(moneyPossibilities(4, [1, 2, 3]));
 
 /**
 Write a function to find the 2nd largest element in a binary search tree
@@ -250,4 +291,13 @@ const loserStockArray = [ 499, 495, 494, 493, 492, 491, 490, 489, 488, 487, 486,
 const productArray = [10, 8, 12, 3, 1, 15, 7, 5]; // [ 453600, 567000, 378000, 504000, 4536000, 302400, 648000, 907200 ]
 console.log(getAllProductsExceptIndex(productArray));
 console.log(getHighestThree([-10, -10, 1, 3, 2]));
+const meetings =   [
+    {startTime: 0,  endTime: 1},
+    {startTime: 3,  endTime: 5},
+    {startTime: 4,  endTime: 8},
+    {startTime: 10, endTime: 12},
+    {startTime: 9,  endTime: 10},
+];
+
+console.log(mergeRanges(meetings));
  */
