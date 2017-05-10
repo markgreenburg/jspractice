@@ -1,0 +1,19 @@
+{
+  "name": "quicktester",
+  "version": "1.0.0",
+  "description": "sample solutions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mark Greenburg",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "eslint-plugin-react": "^7.0.0",
+    "jasmine": "^2.6.0"
+  }
+}
