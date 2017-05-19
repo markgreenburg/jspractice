@@ -212,7 +212,76 @@ const moneyPossibilities = (amountLeft, denominations, currentIndex) => {
 
 }
 
-console.log(moneyPossibilities(4, [1, 2, 3]));
+/**
+ * 6: Write a function to find the rectangular intersection of two given
+ * rectangles. As with the example above, rectangles are always "straight" and 
+ * never "diagonal." More rigorously: each side is parallel with either the 
+ * x-axis or the y-axis.
+ * @typedef {object} rectangle expected function input
+ * @property {number} leftX
+ * @property {number} bottomY
+ * @property {number} height
+ * @property {number} width
+ * @param {rectangle} first
+ * @param {rectangle} second
+ */
+const findIntersection = (first, second) => {
+    const xOverlap = findRangeOverlap (
+        { start: first.leftX, length: first.width, },
+        { start: second.leftX, length: second.width, }
+    );
+    const yOverlap = findRangeOverlap (
+        { start: first.bottomY, length: first.height, },
+        { start: second.bottomY, length: second.height, }
+    );
+    return ({
+        leftX: xOverlap.start,
+        bottomY: yOverlap.start,
+        width: xOverlap.length,
+        height: yOverlap.length,
+    });
+};
+
+/**
+ * Finds overlap in one-dimensional ranges that have a start coordinate and 
+ * width
+ * @typedef {object} line
+ * @property {number} leftX
+ * @property {number} width
+ * @param {line} line1
+ * @param {line} line2
+ * @return {object} overlap object having same properties as each input
+ */
+const findRangeOverlap = (line1, line2) => {
+    // Calculate end coordinate for each line
+    line1.rightX = line1.start + line1.length;
+    line2.rightX = line2.start + line2.length;
+    // Lines that don't overlap automatically return zero position and width
+    if (line1.rightX <= line2.start || line2.rightX <= line1.start) {
+        return ({ start: 0, length: 0, });
+    }
+    // Overlapping lines should return their overlap start and width
+    const start = Math.max(line1.start, line2.start);
+    const length = Math.min(line1.rightX, line2.rightX) - start;
+    return ({ start, length });
+};
+
+const rectangle1 = {
+    leftX: 2,
+    bottomY: 5,
+    width: 5,
+    height: 2,
+};
+
+const rectangle2 = {
+    leftX: 1,
+    bottomY: 4,
+    width: 8,
+    height: 8,
+};
+
+console.log(findIntersection(rectangle1, rectangle2));
+
 
 /**
 Write a function to find the 2nd largest element in a binary search tree
