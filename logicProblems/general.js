@@ -265,8 +265,54 @@ const findRangeOverlap = (line1, line2) => {
     return ({ start, length });
 };
 
+/** Write a class TempTracker with these methods:
+ * insert()—records a new temperature
+ * getMax()—returns the highest temp we've seen so far
+ * getMin()—returns the lowest temp we've seen so far
+ * getMean()—returns the mean ↴ of all temps we've seen so far
+ * getMode()—returns a mode ↴ of all temps we've seen so far
+ * Optimize for space and time.
+ */
+const inserter = state => ({
+    insert: (temperature) => {
+        state.temperatures.concat(temperature);
+        
+    },
+});
+
+const maxGetter = (state) => ({
+    getMax: () => state.reduce((accum, temperature) => (
+        temperature > accum ? temperature : accum
+    ), state[0] || 0),
+});
+
+const minGetter = (state) => ({
+    getMin: () => state.reduce((accum, temperature) => (
+        temperature < accum ? temperature : accum
+    ), state[0] || 0),
+});
+
+const meanGetter = (state) => ({
+    getMean: () => {
+        const total = state.reduce((accum, temperature) => (
+            accum + temperature
+        ), 0);
+        return total / state.length;
+    }
+});
+
+const modeGetter = (state) => ({
+    getMode: () => {
+
+    }
+})
+
+const TempTracker = (state) => {
+
+}
+
 /**
-Write a function to find the 2nd largest element in a binary search tree
+* Write a function to find the 2nd largest element in a binary search tree
 */
 
 // First, implement a function to find the largest element in the tree
