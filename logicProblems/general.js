@@ -209,8 +209,7 @@ const moneyPossibilities = (amountLeft, denominations, currentIndex) => {
     }
 
     return numPossibilities;
-
-}
+};
 
 /**
  * 6: Write a function to find the rectangular intersection of two given
@@ -266,23 +265,6 @@ const findRangeOverlap = (line1, line2) => {
     return ({ start, length });
 };
 
-const rectangle1 = {
-    leftX: 2,
-    bottomY: 5,
-    width: 5,
-    height: 2,
-};
-
-const rectangle2 = {
-    leftX: 1,
-    bottomY: 4,
-    width: 8,
-    height: 8,
-};
-
-console.log(findIntersection(rectangle1, rectangle2));
-
-
 /**
 Write a function to find the 2nd largest element in a binary search tree
 */
@@ -299,7 +281,7 @@ const findLargestElement = (node) => {
         if (!current.right) { return current.value }
         current = current.right;
     }
-}
+};
 
 // Then, implement function to find the largest element in the tree
 const findSecondLargestElement = (node) => {
@@ -329,44 +311,4 @@ const findSecondLargestElement = (node) => {
         // Otherwise we're not at the second largest node, continue right
         current = current.right;
     }
-}
-
-
-
-
-
-
-/**
-"Tests" - uncomment as needed
-TO-DO: Implement tests via Jasmine in separate module
-// Initialize an array of stock prices to test logic against
-const stockArray = [ 499, 429, 513, 499, 512, 509, 487, 495, 514, 535, 512, 511, 525 ]; // 535 - 429 = 106
-// How about if the last timestamp had the highest price?
-const stockArrayHighestLast = [ 499, 429, 513, 499, 512, 509, 487, 495, 514, 535, 512, 511, 549 ]; // 549 - 429 = 120
-// How about if the last timestamp had the lowest price?
-const stockArrayLowestLast = [ 499, 429, 513, 499, 512, 509, 487, 495, 514, 535, 512, 511, 419 ]; // 535 - 429 = 106
-// How about if the stock only lost money yesterday?
-const loserStockArray = [ 499, 495, 494, 493, 492, 491, 490, 489, 488, 487, 486, 485 ];
-
-// console.log("// Initialize an array of stock prices to test logic against");
-// console.log(getMaxProfit(stockArray));
-// console.log("// How about if the last timestamp had the highest price?");
-// console.log(getMaxProfit(stockArrayHighestLast));
-// console.log("// How about if the last timestamp had the lowest price?");
-// console.log(getMaxProfit(stockArrayLowestLast));
-// console.log("// How about if the stock only lost money yesterday?");
-// console.log(getMaxProfit(loserStockArray));
-
-const productArray = [10, 8, 12, 3, 1, 15, 7, 5]; // [ 453600, 567000, 378000, 504000, 4536000, 302400, 648000, 907200 ]
-console.log(getAllProductsExceptIndex(productArray));
-console.log(getHighestThree([-10, -10, 1, 3, 2]));
-const meetings =   [
-    {startTime: 0,  endTime: 1},
-    {startTime: 3,  endTime: 5},
-    {startTime: 4,  endTime: 8},
-    {startTime: 10, endTime: 12},
-    {startTime: 9,  endTime: 10},
-];
-
-console.log(mergeRanges(meetings));
- */
+};
