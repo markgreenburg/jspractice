@@ -332,16 +332,12 @@ class TempTracker {
   }
 }
 
-const temperatures = new TempTracker();
-temperatures.insert(50);
-temperatures.insert(25);
-temperatures.insert(101);
-temperatures.insert(101);
-temperatures.insert(2);
-console.log('mean: ', temperatures.getMean());
-console.log('min: ', temperatures.getMin());
-console.log('max: ', temperatures.getMax());
-console.log('mode: ', temperatures.getMode());
+/**
+ * Write a function to see if a binary tree ↴ is "superbalanced" (a new tree 
+ * property we just made up).
+ * A tree is "superbalanced" if the difference between the depths of any two 
+ * leaf nodes is no greater than one.
+ */
 
 /**
 * Write a function to find the 2nd largest element in a binary search tree
