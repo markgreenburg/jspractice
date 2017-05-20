@@ -304,12 +304,15 @@ class TempTracker {
     // Update mean temp and calc variables
     this.tempsCount += 1;
     this.tempsTotal += reading;
-    this.mean = tempsTotal / tempsCount;
+    this.meanTemp = this.tempsTotal / this.tempsCount;
 
     // Update temps object and calculate new mode temp
     this.temps[reading] ? this.temps[reading] +=1 : this.temps[reading] = 1;
-    this.mode = Math.max(this.temps[modeTemp], this.temps[reading]);
-    this.modeCount = this.temps[mode];
+    this.modeTemp = (this.temps[reading] > this.modeCount
+      ? reading
+      : this.modeTemp
+    );
+    this.modeCount = this.temps[this.modeTemp];
   }
 
   getMin() {
@@ -321,13 +324,24 @@ class TempTracker {
   }
 
   getMean() {
-    return this.tempsTotal / this.tempsCount;
+    return this.meanTemp;
   }
 
   getMode() {
     return this.modeTemp;
   }
 }
+
+const temperatures = new TempTracker();
+temperatures.insert(50);
+temperatures.insert(25);
+temperatures.insert(101);
+temperatures.insert(101);
+temperatures.insert(2);
+console.log('mean: ', temperatures.getMean());
+console.log('min: ', temperatures.getMin());
+console.log('max: ', temperatures.getMax());
+console.log('mode: ', temperatures.getMode());
 
 /**
 * Write a function to find the 2nd largest element in a binary search tree
